@@ -121,28 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &391027465 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2784464211121367105, guid: dcf8b8e395ab1574b85d49461ece6ee6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2784464211477263176}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &391027466
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 391027465}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea54a5eb4bb424f47a4c456392ee3bce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRange: 10
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,39 +204,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &840848577 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1101203777427862730, guid: 62bbe66ca385fdd47ae51f42b202c345,
-    type: 3}
-  m_PrefabInstance: {fileID: 1101203778200772619}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &840848578
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840848577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1077640987e1ab489a19902b3384a4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 4496424965931409908, guid: 0a0e759d447791644a67ef888251d6ae,
-    type: 3}
---- !u!114 &840848579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 840848577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8396ae0ca66284d4cbc9d0cc89d0ff57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
 --- !u!1001 &1101203778200772619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -321,25 +266,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1101203777427862729, guid: 62bbe66ca385fdd47ae51f42b202c345,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 4aceca72169467a40935ffb157d10a1c,
-        type: 3}
-    - target: {fileID: 1101203777427862729, guid: 62bbe66ca385fdd47ae51f42b202c345,
-        type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1101203777427862730, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1101203777427862730, guid: 62bbe66ca385fdd47ae51f42b202c345,
-        type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
