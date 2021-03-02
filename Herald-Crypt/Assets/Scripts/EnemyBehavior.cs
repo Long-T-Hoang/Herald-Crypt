@@ -4,12 +4,19 @@ using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
 {
+    [Header("Enemy attributes")]
     [SerializeField]
+    [Range(1.0f, 10.0f)]
     private float detectionRange;
     [SerializeField]
+    [Range(1.0f, 5.0f)]
     private float speed;
+
+    [Header("Misc")]
     [SerializeField]
     private LayerMask playerMask;
+    [SerializeField]
+    private bool debugOn;
 
     // Player attributes
     private Collider2D playerCollider;
@@ -64,6 +71,8 @@ public class EnemyBehavior : MonoBehaviour
     // Debug info
     private void OnDrawGizmos()
     {
+        if (!debugOn) return;
+
         // Detection range gizmo
         UnityEditor.Handles.color = Color.red;
         UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
