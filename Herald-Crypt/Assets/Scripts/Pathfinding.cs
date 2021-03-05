@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿// Author: Long Hoang
+// Pathfinding script
+// Create pathfinding grid and calculate path using A* 
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,9 +23,12 @@ public class Pathfinding
     // Constructor 
     public Pathfinding(int width, int height, float cellSize)
     {
-        nodeGrid = new Grid<PathNode>(width, height, cellSize, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        float startOffset = -width * cellSize * 0.5f + cellSize * 0.5f;
+
+        nodeGrid = new Grid<PathNode>(width, height, cellSize, new Vector3(startOffset, startOffset), (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
+    // Calculate and return path from startNode to endNode
     public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
         PathNode startNode = nodeGrid.GetGridObject(startX, startY);
@@ -91,6 +98,18 @@ public class Pathfinding
         return null;
     }
 
+    // FindPath override with Vector3 param
+    public List<PathNode> FindPath(Vector3 start, Vector3 end)
+    {
+        nodeGrid.WorldToCellPos(start, out int startX, out int startY);
+        nodeGrid.WorldToCellPos(end, out int endX, out int endY);
+        
+        return FindPath(startX, startY, endX, endY);
+    }
+
+
+    // Misc functions
+    // Return four adjacent neighbours of currentNode
     private List<PathNode> GetNeighbourList(PathNode currentNode)
     {
         List<PathNode> neighbourList = new List<PathNode>();
@@ -111,6 +130,7 @@ public class Pathfinding
         return neighbourList;
     }
 
+    // Calculate and return list of nodes to get to endNode
     private List<PathNode> CalculatePath(PathNode endNode)
     {
         List<PathNode> path = new List<PathNode>();
@@ -128,6 +148,7 @@ public class Pathfinding
         return path;
     }
 
+    // Calculate heuristic cost
     private int CalculateDistanceCost(PathNode a, PathNode b)
     {
         int xDist = Mathf.Abs(a.x - b.x);
@@ -136,6 +157,7 @@ public class Pathfinding
         return xDist + yDist;
     }
 
+    // Return node with lowest f cost in list
     private PathNode getLowestCostNode(List<PathNode> pathNodeList)
     {
         PathNode lowestCostNode = pathNodeList[0];

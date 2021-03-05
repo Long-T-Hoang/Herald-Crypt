@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// Author: Long Hoang
+// PathNode to be used with Pathfinding
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,5 +40,10 @@ public class PathNode
     public override string ToString()
     {
         return isWalkable.ToString();
+    }
+
+    public Vector3 GetPos()
+    {
+        return grid.CellToWorldPos(x, y);
     }
 }

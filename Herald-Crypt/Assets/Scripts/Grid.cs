@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Author: Long Hoang
+// Create generic grid array
+// Has visual debug and functions to convert between world coords and grid coord
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,7 +52,7 @@ public class Grid<GridObject>
         if (true) ShowDebug();
     }
 
-    private Vector3 CellToWorldPos(int x, int y)
+    public Vector3 CellToWorldPos(int x, int y)
     {
         return new Vector3(x, y) * cellSize + startPoint;
     }
@@ -66,7 +70,7 @@ public class Grid<GridObject>
         transform.position = position;
         TextMesh textMesh = gameObject.GetComponent<TextMesh>();
         textMesh.text = text;
-        textMesh.characterSize = 0.05f;
+        textMesh.characterSize = 0.005f;
         textMesh.anchor = TextAnchor.MiddleCenter;
         textMesh.alignment = TextAlignment.Center;
         textMesh.fontSize = fontSize;
@@ -104,7 +108,6 @@ public class Grid<GridObject>
         {
             for (int y = 0; y < height; y++)
             {
-
                 // Draw cells
                 debugTextArray[x, y] = CreateTextObject(gridArray[x, y].ToString(), CellToWorldPos(x, y));
                 Debug.DrawLine(CellToWorldPos(x, y) - new Vector3(cellSize, cellSize) * 0.5f, CellToWorldPos(x + 1, y) - new Vector3(cellSize, cellSize) * 0.5f, Color.white, 100f);
