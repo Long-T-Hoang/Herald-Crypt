@@ -21,11 +21,28 @@ public class Pathfinding
     }
 
     // Constructor 
-    public Pathfinding(int width, int height, float cellSize)
+    public Pathfinding(int width, int height, float cellSize, Vector3 startPoint)
     {
-        float startOffset = -width * cellSize * 0.5f + cellSize * 0.5f;
+        nodeGrid = new Grid<PathNode>(width, height, cellSize, startPoint, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
 
-        nodeGrid = new Grid<PathNode>(width, height, cellSize, new Vector3(startOffset, startOffset), (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
+        AddWalls();
+    }
+
+    private void AddWalls()
+    {
+        for(int x = 0; x < nodeGrid.Width; x++)
+        {
+            for(int y = 0; y < nodeGrid.Height; y++)
+            {
+                PathNode node = nodeGrid.GetGridObject(x, y);
+                Vector3 nodePos = node.GetPos();
+                Collider2D collider = Physics2D.OverlapCircle(nodePos, 0.2f);
+                if (collider != null && collider.CompareTag("Wall"))
+                {
+                    node.isWalkable = false;
+                }
+            }
+        }
     }
 
     // Calculate and return path from startNode to endNode

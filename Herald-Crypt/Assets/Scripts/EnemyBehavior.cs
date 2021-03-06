@@ -19,7 +19,7 @@ public class EnemyBehavior : MonoBehaviour
     private bool debugOn;
 
     // Pathfinding
-    private Pathfinding pathFinding;
+    public Pathfinding pathFinding;
     private List<PathNode> path;
     private int currentNode;
 
@@ -32,7 +32,6 @@ public class EnemyBehavior : MonoBehaviour
     {
         playerCollider = null;
 
-        pathFinding = new Pathfinding(20, 20, 1);
         currentNode = 0;
 
         lastSeenPos = transform.position;
@@ -45,11 +44,9 @@ public class EnemyBehavior : MonoBehaviour
 
         if(playerCollider != null) lastSeenPos = playerCollider.transform.position;
 
-        if (path == null)
-        {
-            LookForPlayer();
-        }
-        else
+        LookForPlayer();
+        
+        if(path != null)
         {
             FollowPlayer();
         }
@@ -67,6 +64,7 @@ public class EnemyBehavior : MonoBehaviour
             path = pathFinding.FindPath(transform.position, lastSeenPos);
         }
 
+        /*
         if (path != null)
         {
             for (int i = 0; i < path.Count - 1; i++)
@@ -74,6 +72,7 @@ public class EnemyBehavior : MonoBehaviour
                 Debug.DrawLine(path[i].GetPos(), path[i + 1].GetPos(), Color.green, 100f);
             }
         }
+        */
     }
 
     // Follow player
@@ -126,8 +125,8 @@ public class EnemyBehavior : MonoBehaviour
         if (!debugOn) return;
 
         // Detection range gizmo
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
+        //UnityEditor.Handles.color = Color.red;
+        //UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
     }
 
     /*

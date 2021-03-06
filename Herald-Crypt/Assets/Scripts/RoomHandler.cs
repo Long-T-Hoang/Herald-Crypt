@@ -13,20 +13,17 @@ public class RoomHandler : MonoBehaviour
     private int rand;
     public bool spawned = false;
 
-    private float totalWidth;
-    private float totalHeight;
-    private float lowestX = 0;
-    private float lowestY = 0;
-    private float highestX = 0;
-    private float highestY = 0;
-    private GameObject[] objects;
+    // For analyzing room min, max, width and height
+    public RoomStats roomStat;
 
     void Start()
     {
+        roomStat = Resources.FindObjectsOfTypeAll<RoomStats>()[0];
+        roomStat.finishGeneration = false;
+
         templates = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomTemplates>();
         Invoke("Spawn", 0.2f);
     }
-
 
     void Spawn()
     {
@@ -56,34 +53,11 @@ public class RoomHandler : MonoBehaviour
                 rand = Random.Range(0, templates.rightRooms.Length);
                 Instantiate(templates.rightRooms[rand], transform.position, Quaternion.identity);
             }
+
             spawned = true;
         }
-        objects = GameObject.FindGameObjectsWithTag("room");
 
-        for(int i = 0; i < objects.Length; i++)
-        {
-            if(objects[i].transform.position.x < lowestX)
-            {
-                lowestX = objects[i].transform.position.x;
-            }
-            if (objects[i].transform.position.y < lowestY)
-            {
-                lowestY = objects[i].transform.position.y;
-            }
-            if (objects[i].transform.position.x > highestX)
-            {
-                highestX = objects[i].transform.position.x;
-            }
-            if (objects[i].transform.position.y > highestY)
-            {
-                highestY = objects[i].transform.position.y;
-            }
-
-            totalWidth = highestX - lowestX;
-            totalHeight = highestY - lowestY;
-
-            Debug.Log("Lowest: " + lowestX + " " + lowestY + " Highest: " + highestX + " " + highestY + " Width: " + totalWidth + " Height: " + totalHeight);
-        }
+        roomStat.CalculateStat();
     }
 
     void OnTriggerEnter2D(Collider2D other)

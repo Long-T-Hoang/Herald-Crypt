@@ -9,7 +9,7 @@ public class TESTING : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pathFinding = new Pathfinding(10, 10, 1);
+        pathFinding = new Pathfinding(10, 10, 1, Vector3.zero);
     }
 
     // Update is called once per frame

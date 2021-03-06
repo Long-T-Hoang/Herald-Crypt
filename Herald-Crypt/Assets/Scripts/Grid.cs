@@ -49,12 +49,13 @@ public class Grid<GridObject>
             }
         }
 
-        if (true) ShowDebug();
+        if (false) ShowDebug();
     }
 
     public Vector3 CellToWorldPos(int x, int y)
     {
-        return new Vector3(x, y) * cellSize + startPoint;
+        Vector3 returnPos = new Vector3(x, y) * cellSize + startPoint;
+        return returnPos;
     }
 
     public void WorldToCellPos(Vector3 worldPos, out int x, out int y)
@@ -104,6 +105,8 @@ public class Grid<GridObject>
 
     private void ShowDebug()
     {
+        Debug.Log(startPoint);
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
