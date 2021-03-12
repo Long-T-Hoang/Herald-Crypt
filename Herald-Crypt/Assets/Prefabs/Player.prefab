@@ -96,7 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAnim1: {fileID: 21300000, guid: d2b8b98c25cd0364dbe3a36de263a66f, type: 3}
   playerAnim2: {fileID: 21300000, guid: 3ced89539427e0c4daf11c42e08d7fb7, type: 3}
-  playerAnimPos: 0
+  playerAnimPos: 1
 --- !u!1 &4197267764797458292
 GameObject:
   m_ObjectHideFlags: 0
