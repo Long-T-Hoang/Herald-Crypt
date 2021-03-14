@@ -21,9 +21,10 @@ public class PlayerStats : MonoBehaviour
         health = 0;
         money = 0;
 
-        scoreTxt = GetComponent<Text>();
-        healthTxt = GetComponent<Text>();
-        moneyTxt = GetComponent<Text>();
+        // Already is a Text component
+        //scoreTxt = GetComponent<Text>();
+        //healthTxt = GetComponent<Text>();
+        //moneyTxt = GetComponent<Text>();
     }
 
     // Update is called once per frame

@@ -9,12 +9,23 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField]
     private float lifetime;
 
-    private float timer;
+    // Components
+    private Rigidbody2D rb;
 
+    private Vector2 movement;
+
+    // Timer
+    private float timer;
+    
     // Start is called before the first frame update
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+
         timer = 0.0f;
+
+        // Set move direction (forward in 2D)
+        movement = transform.up;
     }
 
     // Update is called once per frame
@@ -23,21 +34,24 @@ public class ProjectileScript : MonoBehaviour
         // Update timer
         timer += Time.deltaTime;
 
-        // Update position
-        Vector3 pos = transform.position;
-        pos.x += transform.up.x * speed * Time.deltaTime;
-        pos.y += transform.up.y * speed * Time.deltaTime;
-        transform.position = pos;
-
         if(timer >= lifetime)
         {
             Destroy(gameObject);
         }
     }
 
+    private void FixedUpdate()
+    {
+        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.transform.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }
+        if(collision.transform.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }
