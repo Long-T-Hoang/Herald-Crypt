@@ -55,6 +55,7 @@ public class Pathfinding
         openList = new List<PathNode> { startNode };
         closedList = new List<PathNode>();
 
+        // Set all node to make gCost
         for(int x = 0; x < nodeGrid.Width; x++)
         {
             for(int y = 0; y < nodeGrid.Height; y++)
@@ -82,11 +83,14 @@ public class Pathfinding
                 return CalculatePath(endNode);
             }
 
+            // Assigned current node to "searched"
+            // Remove current node from openList and add to closedList
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
             foreach(PathNode neighbourNode in GetNeighbourList(currentNode))
             {
+                // Continue if node is in closed list or not walkable
                 if (closedList.Contains(neighbourNode)) continue;
                 if (!neighbourNode.isWalkable)
                 {
@@ -94,6 +98,7 @@ public class Pathfinding
                     continue;
                 }
 
+                // Calculate cost of current neighbour node
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
 
                 if(tentativeGCost < neighbourNode.gCost)
@@ -103,7 +108,7 @@ public class Pathfinding
                     neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
                     neighbourNode.CalculateFCost();
 
-                    // Add to open list if not on
+                    // Add to open list if not on open list
                     if(!openList.Contains(neighbourNode))
                     {
                         openList.Add(neighbourNode);
@@ -131,24 +136,6 @@ public class Pathfinding
     private List<PathNode> GetNeighbourList(PathNode currentNode)
     {
         List<PathNode> neighbourList = new List<PathNode>();
-
-        /*
-        // left
-        if (currentNode.x - 1 >= 0)
-        {
-            neighborNode = nodeGrid.GetGridObject(currentNode.x - 1, currentNode.y);
-            if (neighborNode != null) neighbourList.Add(neighborNode);
-        }
-        // right
-        if (currentNode.x + 1 < nodeGrid.Width)
-            neighbourList.Add(nodeGrid.GetGridObject(currentNode.x + 1, currentNode.y));
-        // up
-        if (currentNode.y + 1 < nodeGrid.Height)
-            neighbourList.Add(nodeGrid.GetGridObject(currentNode.x, currentNode.y + 1));
-        //down
-        if (currentNode.y - 1 >= 0)
-            neighbourList.Add(nodeGrid.GetGridObject(currentNode.x, currentNode.y - 1));
-        */
 
         for(int x = -1; x < 2; x++)
         {
