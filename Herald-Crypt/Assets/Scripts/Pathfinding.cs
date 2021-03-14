@@ -8,7 +8,8 @@ using UnityEngine;
 
 public class Pathfinding
 {
-    private const int MOVE_COST = 1;
+    private const int MOVE_COST_ADJACENT = 10;
+    private const int MOVE_COST_DIAGONAL = 14;
 
     private Grid<PathNode> nodeGrid;
 
@@ -131,9 +132,13 @@ public class Pathfinding
     {
         List<PathNode> neighbourList = new List<PathNode>();
 
+        /*
         // left
         if (currentNode.x - 1 >= 0)
-            neighbourList.Add(nodeGrid.GetGridObject(currentNode.x - 1, currentNode.y));
+        {
+            neighborNode = nodeGrid.GetGridObject(currentNode.x - 1, currentNode.y);
+            if (neighborNode != null) neighbourList.Add(neighborNode);
+        }
         // right
         if (currentNode.x + 1 < nodeGrid.Width)
             neighbourList.Add(nodeGrid.GetGridObject(currentNode.x + 1, currentNode.y));
@@ -143,6 +148,19 @@ public class Pathfinding
         //down
         if (currentNode.y - 1 >= 0)
             neighbourList.Add(nodeGrid.GetGridObject(currentNode.x, currentNode.y - 1));
+        */
+
+        for(int x = -1; x < 2; x++)
+        {
+            for(int y = -1; y < 2; y++)
+            {
+                int nodeX = currentNode.x + x;
+                int nodeY = currentNode.y + y;
+                if (nodeX < 0 || nodeY < 0 || nodeX >= nodeGrid.Width || nodeY >= nodeGrid.Height) continue;
+
+                neighbourList.Add(nodeGrid.GetGridObject(nodeX, nodeY));
+            }
+        }
 
         return neighbourList;
     }

@@ -19,12 +19,12 @@ public class PathNode
     public PathNode prevNode;
 
     // Constructor
-    public PathNode(Grid<PathNode> grid, int x, int y)
+    public PathNode(Grid<PathNode> grid, int x, int y, bool isWalkable = true)
     {
         this.grid = grid;
         this.x = x;
         this.y = y;
-        isWalkable = true;
+        this.isWalkable = isWalkable;
     }
 
     public void CalculateFCost()
