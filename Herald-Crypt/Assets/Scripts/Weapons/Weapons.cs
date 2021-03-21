@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapons
+public class Weapons : MonoBehaviour
 {
-    protected GameObject projectile;
+    public GameObject projectile;
 
     // Stats
     protected float atkCooldown;
@@ -30,7 +30,7 @@ public class Weapons
     {
         Vector3 direction = (end - start).normalized;
 
-        GameObject proj = GameObject.Instantiate(projectile, start, rotation) as GameObject;
+        GameObject proj = Instantiate(projectile, start, rotation) as GameObject;
 
         proj.GetComponent<ProjectileScript>().SetStat(range, speed, attackPower);
     }
