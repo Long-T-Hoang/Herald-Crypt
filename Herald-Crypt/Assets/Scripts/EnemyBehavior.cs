@@ -43,7 +43,9 @@ public class EnemyBehavior : MonoBehaviour
         playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
 
         if(playerCollider != null) lastSeenPos = playerCollider.transform.position;
-
+        
+        // Look for player if the last path node pos is different from player current node pos
+        // Or when path is null
         LookForPlayer();
         
         if(path != null)
@@ -57,36 +59,48 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (playerCollider != null)
         {
-            path = pathFinding.FindPath(transform.position, playerCollider.transform.position);
+            List<PathNode> temp = pathFinding.FindPath(transform.position, playerCollider.transform.position);
+            
+            if (path == null)
+            {
+                path = temp;
+                currentNode = 0;
+            }
+            else if(pathFinding.NodeGrid.WorldToCellPos(playerCollider.transform.position) != path[path.Count - 1].cellPos)
+            {
+                path = temp;
+                currentNode = 0;
+            }
         }
         else if (lastSeenPos != null && lastSeenPos != transform.position)
         {
-            path = pathFinding.FindPath(transform.position, lastSeenPos);
-        }
+            List<PathNode> temp = pathFinding.FindPath(transform.position, lastSeenPos);
 
-        /*
-        if (path != null)
-        {
-            for (int i = 0; i < path.Count - 1; i++)
+            if (path == null) 
             {
-                Debug.DrawLine(path[i].GetPos(), path[i + 1].GetPos(), Color.green, 100f);
+                path = temp;
+                currentNode = 0;
+            }
+            else if (pathFinding.NodeGrid.WorldToCellPos(lastSeenPos) != path[path.Count - 1].cellPos)
+            {
+                path = temp;
+                currentNode = 0;
             }
         }
-        */
     }
 
     // Follow player
     private void FollowPlayer()
     {
-        float distance = Vector3.Distance(transform.position, path[currentNode].GetPos());
+        float distanceToNextNode = Vector3.Distance(transform.position, path[currentNode].GetPos());
         
-        if(distance >= 0.01f)
+        if(distanceToNextNode >= 0.01f)
         {
             MoveTo(path[currentNode].GetPos());
         }
         else
         {
-            if (currentNode == path.Count - 1)
+            if (currentNode >= path.Count - 1)
             {
                 path = null;
                 currentNode = 0;
@@ -125,8 +139,19 @@ public class EnemyBehavior : MonoBehaviour
         if (!debugOn) return;
 
         // Detection range gizmo
-        //UnityEditor.Handles.color = Color.red;
-        //UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
+        UnityEditor.Handles.color = Color.red;
+        UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
+        
+        if(path != null)
+        {
+            for(int i = 0; i < path.Count - 1; i++)
+            {
+                Vector2 start = path[i].GetPos();
+                Vector2 end = path[i + 1].GetPos();
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(start, end);
+            }
+        }
     }
 
     /*

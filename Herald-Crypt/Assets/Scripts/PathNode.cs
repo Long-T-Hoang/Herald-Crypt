@@ -10,6 +10,7 @@ public class PathNode
     private Grid<PathNode> grid;
     public int x;
     public int y;
+    public Vector2 cellPos;
 
     public int gCost;
     public int hCost;
@@ -24,6 +25,7 @@ public class PathNode
         this.grid = grid;
         this.x = x;
         this.y = y;
+        cellPos = new Vector2(x, y);
         this.isWalkable = isWalkable;
     }
 

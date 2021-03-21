@@ -49,7 +49,7 @@ public class Grid<GridObject>
             }
         }
 
-        if (false) ShowDebug();
+        //ShowDebug();
     }
 
     public Vector3 CellToWorldPos(int x, int y)
@@ -62,6 +62,13 @@ public class Grid<GridObject>
     {
         x = Mathf.FloorToInt((worldPos.x - startPoint.x + cellSize * 0.5f) / cellSize);
         y = Mathf.FloorToInt((worldPos.y - startPoint.y + cellSize * 0.5f) / cellSize);
+    }
+
+    public Vector2 WorldToCellPos(Vector3 worldPos)
+    {
+        WorldToCellPos(worldPos, out int x, out int y);
+
+        return new Vector2(x, y);
     }
 
     private TextMesh CreateTextObject(string text, Vector3 position, int fontSize = 100)

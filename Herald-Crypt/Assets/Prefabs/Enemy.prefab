@@ -148,4 +148,4 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 256
-  debugOn: 0
+  debugOn: 1
