@@ -1620,6 +1620,12 @@ PrefabInstance:
       objectReference: {fileID: 1170389104}
     - target: {fileID: 4197267764797458191, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
+      propertyPath: defaultWeapon
+      value: 
+      objectReference: {fileID: 3940886255299237316, guid: 357421344a4b1a14ba612e705cdec9e7,
+        type: 3}
+    - target: {fileID: 4197267764797458191, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
       propertyPath: currentWepIndex
       value: 0
       objectReference: {fileID: 0}
@@ -1633,12 +1639,6 @@ PrefabInstance:
       propertyPath: inventory.Array.size
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 4197267764797458191, guid: 62bbe66ca385fdd47ae51f42b202c345,
-        type: 3}
-      propertyPath: inventory.Array.data[0]
-      value: 
-      objectReference: {fileID: 3940886255299237316, guid: 357421344a4b1a14ba612e705cdec9e7,
-        type: 3}
     - target: {fileID: 4197267764797458291, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: m_RootOrder

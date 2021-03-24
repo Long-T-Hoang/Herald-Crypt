@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 4496424965931409908, guid: 0a0e759d447791644a67ef888251d6ae,
     type: 3}
+  prefabRef: {fileID: 7423439242201120900}
 --- !u!61 &20913038576168705
 BoxCollider2D:
   m_ObjectHideFlags: 0

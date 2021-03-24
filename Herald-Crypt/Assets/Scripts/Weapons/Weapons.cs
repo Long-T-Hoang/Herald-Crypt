@@ -5,6 +5,7 @@ using UnityEngine;
 public class Weapons : MonoBehaviour
 {
     public GameObject projectile;
+    public GameObject prefabRef;
 
     // Stats
     protected float atkCooldown;

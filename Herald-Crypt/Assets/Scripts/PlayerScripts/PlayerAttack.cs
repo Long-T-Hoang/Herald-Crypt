@@ -15,14 +15,17 @@ public class PlayerAttack : MonoBehaviour
     private Weapons currentWepScript;
     public int currentWepIndex;
     private const int WEAPON_COUNT = 3;
-
-    // Attack cooldown
-    private float attackCooldownTimer;
-
     [SerializeField]
     private GameObject inventoryUI;
     private UnityEvent invUpdateEvent;
     private UnityEvent switchWepEvent;
+    [SerializeField]
+    private GameObject defaultWeapon;
+    private int currentWepNum;
+
+    // Attack cooldown
+    private float attackCooldownTimer;
+
 
     [SerializeField]
     private LayerMask weaponMask;
@@ -30,6 +33,13 @@ public class PlayerAttack : MonoBehaviour
     public GameObject[] Inventory
     {
         get { return inventory; }
+    }
+
+    private void Awake()
+    {
+        // Set default weapon
+        inventory[0] = Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
+        currentWepNum = 1;
     }
 
     // Start is called before the first frame update
@@ -42,7 +52,6 @@ public class PlayerAttack : MonoBehaviour
         invUpdateEvent = inventoryUI.GetComponent<InventoryUI>().InvUpdateEvent;
         switchWepEvent = inventoryUI.GetComponent<InventoryUI>().SwitchWepEvent;
 
-        // Set default weapon
         SwitchWeapon(0.0f);
     }
 
@@ -86,15 +95,7 @@ public class PlayerAttack : MonoBehaviour
         currentWepIndex += (int)mouseScrollDelta;
 
         if (currentWepIndex < 0) currentWepIndex = WEAPON_COUNT - 1;
-        if (currentWepIndex >= WEAPON_COUNT) currentWepIndex = 0;
-
-        while (inventory[currentWepIndex] == null)
-        {
-            currentWepIndex++;
-
-            if (currentWepIndex < 0) currentWepIndex = WEAPON_COUNT - 1;
-            if (currentWepIndex >= WEAPON_COUNT) currentWepIndex = 0;
-        }
+        if (currentWepIndex >= WEAPON_COUNT || currentWepIndex >= currentWepNum) currentWepIndex = 0;
 
         currentWeapon = inventory[currentWepIndex];
         currentWepScript = currentWeapon.GetComponent<Weapons>();
@@ -108,18 +109,28 @@ public class PlayerAttack : MonoBehaviour
 
         if (weaponCollider == null) return;
 
+        GameObject weaponToAdd = weaponCollider.gameObject;
+
         for(int i = 0; i < inventory.Length; i++)
         {
             if(inventory[i] == null)
             {
-                inventory[i] = weaponCollider.gameObject;
-                invUpdateEvent.Invoke();
+                currentWepNum++;
+                AddToInventory(i, weaponToAdd);
+
                 return;
             }
         }
 
-        inventory[currentWepIndex] = weaponCollider.gameObject;
+        // Remove and put current weapon at player position then add weapon to inventory
+        inventory[currentWepIndex].transform.position = transform.position;
+        AddToInventory(currentWepIndex, weaponToAdd);
+    }
 
+    void AddToInventory(int index, GameObject weaponToAdd)
+    {
+        inventory[index] = weaponToAdd;
+        weaponToAdd.transform.position = weaponToAdd.transform.position - Vector3.forward * 10;
         invUpdateEvent.Invoke();
     }
 }
