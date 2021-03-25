@@ -49,7 +49,8 @@ public class RoomStats : ScriptableObject
             totalWidth = (int)((highestX - lowestX) * 2 + 1);
             totalHeight = (int)((highestY - lowestY) * 2 + 1);
 
-            Debug.Log("Lowest: " + lowestX + " " + lowestY + " Highest: " + highestX + " " + highestY + " Width: " + totalWidth + " Height: " + totalHeight);
+            // Logging stat of generated room
+            //Debug.Log("Lowest: " + lowestX + " " + lowestY + " Highest: " + highestX + " " + highestY + " Width: " + totalWidth + " Height: " + totalHeight);
         }
 
         finishGeneration = true;

@@ -53,7 +53,7 @@ public class EnemyManager : MonoBehaviour
         for(int i = 0; i < rooms.Length; i++)
         {
             GameObject enemyInstance = Instantiate(enemy, rooms[i].transform.position, Quaternion.identity, this.transform);
-            enemyInstance.GetComponent<EnemyBehavior>().pathFinding = pathfinding;
+            enemyInstance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
             enemies.Add(enemyInstance);
         }
     }
