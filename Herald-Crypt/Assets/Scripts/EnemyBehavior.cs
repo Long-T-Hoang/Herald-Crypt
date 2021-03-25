@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public class EnemyBehavior : MonoBehaviour
 {
@@ -27,6 +28,17 @@ public class EnemyBehavior : MonoBehaviour
     private Collider2D playerCollider;
     private Vector3 lastSeenPos;
 
+    // Possible states of enemy
+    private enum EnemyState
+    {
+        IDLE,
+        FOLLOW,
+        ATTACK,
+        ROAM  
+    }
+
+    private EnemyState currentState;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,61 +47,98 @@ public class EnemyBehavior : MonoBehaviour
         currentNode = 0;
 
         lastSeenPos = transform.position;
+
+        currentState = EnemyState.IDLE;
     }
 
     // Update is called once per frame
     void Update()
     {
+        switch(currentState)
+        {
+            case EnemyState.IDLE:
+                playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
+
+                if (playerCollider != null)
+                {
+                    lastSeenPos = playerCollider.transform.position;
+                    currentState = EnemyState.FOLLOW;
+                }
+
+                break;
+
+            case EnemyState.FOLLOW:
+                FollowState();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private void FollowState()
+    {
         playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
 
-        if(playerCollider != null) lastSeenPos = playerCollider.transform.position;
-        
+        if (playerCollider != null) lastSeenPos = playerCollider.transform.position;
+
         // Look for player if the last path node pos is different from player current node pos
         // Or when path is null
         LookForPlayer();
-        
-        if(path != null)
+
+        if (path != null)
         {
             FollowPlayer();
         }
     }
 
-    // Check radius for player
+    // Check radius for player and assign path if detected
     private void LookForPlayer()
     {
+        // When player is in vision
         if (playerCollider != null)
         {
+            // Find and assign path to temporary list
             List<PathNode> temp = pathFinding.FindPath(transform.position, playerCollider.transform.position);
             
+            // If path is empty assign path
             if (path == null)
             {
-                path = temp;
-                currentNode = 0;
+                SetPath(temp);
             }
+            // If player grid position and destination grid position is different, assign path
             else if(pathFinding.NodeGrid.WorldToCellPos(playerCollider.transform.position) != path[path.Count - 1].cellPos)
             {
-                path = temp;
-                currentNode = 0;
+                SetPath(temp);
             }
         }
+        // When player is outside vision
+        // Use last seen position
         else if (lastSeenPos != null && lastSeenPos != transform.position)
         {
+            // Find and assign path to temporary list
             List<PathNode> temp = pathFinding.FindPath(transform.position, lastSeenPos);
 
-            if (path == null) 
+            // If path is empty assign path
+            if (path == null)
             {
-                path = temp;
-                currentNode = 0;
+                SetPath(temp);
             }
+            // If last seen grid position and destination grid position is different, assign path
             else if (pathFinding.NodeGrid.WorldToCellPos(lastSeenPos) != path[path.Count - 1].cellPos)
             {
-                path = temp;
-                currentNode = 0;
+                SetPath(temp);
             }
         }
     }
 
-    // Follow player
+    private void SetPath(List<PathNode> temp)
+    {
+        path = temp;
+        currentNode = 1;
+    }
+
+    // Follow player based on path
     private void FollowPlayer()
     {
         float distanceToNextNode = Vector3.Distance(transform.position, path[currentNode].GetPos());
@@ -132,15 +181,14 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-
     // Debug info
     private void OnDrawGizmos()
     {
         if (!debugOn) return;
 
         // Detection range gizmo
-        //UnityEditor.Handles.color = Color.red;
-        //UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
+        //Handles.color = Color.red;
+        //Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
         
         if(path != null)
         {
