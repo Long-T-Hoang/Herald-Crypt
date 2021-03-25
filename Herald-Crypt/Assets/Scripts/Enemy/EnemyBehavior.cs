@@ -7,6 +7,14 @@ public class EnemyBehavior : MonoBehaviour
 {
     EnemyPathfinding pfScript;
 
+    GameObject player;
+
+    [Header("Enemy stats")]
+    [SerializeField]
+    private int attackPower;
+    [SerializeField]
+    private float attackRange;
+
     // Possible states of enemy
     public enum EnemyState
     {
@@ -40,7 +48,7 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case EnemyState.ATTACK:
-                Debug.Log("Attack");
+                Attack();
                 break;
 
             default:
@@ -48,6 +56,16 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
+    private void Attack()
+    {
+        player = pfScript.CheckSurrounding();
+
+        if(Vector3.Distance(player.transform.position, transform.position) <= attackRange)
+        {
+            Debug.Log("Attack");
+        }
+
+    }
     
     private void OnTriggerEnter2D(Collider2D collision)
     {

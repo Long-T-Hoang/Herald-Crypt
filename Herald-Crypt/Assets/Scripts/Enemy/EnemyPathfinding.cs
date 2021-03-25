@@ -47,7 +47,7 @@ public class EnemyPathfinding : MonoBehaviour
 
     }
     
-    public void CheckSurrounding()
+    public GameObject CheckSurrounding()
     {
         playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
 
@@ -60,6 +60,8 @@ public class EnemyPathfinding : MonoBehaviour
         {
             behaviorScript.currentState = EnemyBehavior.EnemyState.IDLE;
         }
+
+        return playerCollider.gameObject;
     }
 
     // Execute follow state functions to be called in main behaviour script
