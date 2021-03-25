@@ -163,6 +163,7 @@ public class EnemyPathfinding : MonoBehaviour
         transform.position = newPos;
     }
 
+#if (UNITY_EDITOR)
     // Debug info
     private void OnDrawGizmos()
     {
@@ -183,4 +184,5 @@ public class EnemyPathfinding : MonoBehaviour
             }
         }
     }
+#endif
 }
