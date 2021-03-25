@@ -139,8 +139,8 @@ public class EnemyBehavior : MonoBehaviour
         if (!debugOn) return;
 
         // Detection range gizmo
-        UnityEditor.Handles.color = Color.red;
-        UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
+        //UnityEditor.Handles.color = Color.red;
+        //UnityEditor.Handles.DrawWireDisc(transform.position, transform.forward, detectionRange);
         
         if(path != null)
         {
