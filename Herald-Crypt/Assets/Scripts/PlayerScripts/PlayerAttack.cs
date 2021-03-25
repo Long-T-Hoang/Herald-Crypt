@@ -11,16 +11,16 @@ public class PlayerAttack : MonoBehaviour
     [Header("Weapon switch and inventory")]
     [SerializeField]
     private GameObject[] inventory;
+    [SerializeField]
+    private GameObject inventoryUI;
+    [SerializeField]
+    private GameObject defaultWeapon;
     private GameObject currentWeapon;
     private Weapons currentWepScript;
     public int currentWepIndex;
     private const int WEAPON_COUNT = 3;
-    [SerializeField]
-    private GameObject inventoryUI;
     private UnityEvent invUpdateEvent;
     private UnityEvent switchWepEvent;
-    [SerializeField]
-    private GameObject defaultWeapon;
     private int currentWepNum;
 
     // Attack cooldown
@@ -94,7 +94,7 @@ public class PlayerAttack : MonoBehaviour
     {
         currentWepIndex += (int)mouseScrollDelta;
 
-        if (currentWepIndex < 0) currentWepIndex = WEAPON_COUNT - 1;
+        if (currentWepIndex < 0) currentWepIndex = currentWepNum - 1;
         if (currentWepIndex >= WEAPON_COUNT || currentWepIndex >= currentWepNum) currentWepIndex = 0;
 
         currentWeapon = inventory[currentWepIndex];
