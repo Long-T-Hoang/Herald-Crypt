@@ -32,12 +32,12 @@ public class PlayerMovement : MonoBehaviour
             animCool -= Time.deltaTime;
 
             if (animCool <= 0) {
-                if (transform.GetChild(1).gameObject.GetComponent<PlayerLook>().playerAnimPos == 1) {
-                    transform.GetChild(1).gameObject.GetComponent<PlayerLook>().playerAnimPos = 2;
+                if (transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos == 1) {
+                    transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos = 2;
                 }
 
-                else if (transform.GetChild(1).gameObject.GetComponent<PlayerLook>().playerAnimPos == 2) {
-                    transform.GetChild(1).gameObject.GetComponent<PlayerLook>().playerAnimPos = 1;
+                else if (transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos == 2) {
+                    transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos = 1;
                 }
 
                 animCool = 0.3f;
