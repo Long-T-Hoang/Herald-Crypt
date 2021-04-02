@@ -12,9 +12,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D rb;
 
-    // Animation
-    private float animCool = 0.3f;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -29,19 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
         //  Part - Animating Player Sprite
         if (newX != 0 || newY != 0) {
-            animCool -= Time.deltaTime;
-
-            if (animCool <= 0) {
-                if (transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos == 1) {
-                    transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos = 2;
-                }
-
-                else if (transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos == 2) {
-                    transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().playerAnimPos = 1;
-                }
-
-                animCool = 0.3f;
-            }
+            transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.MOVE;
+        }
+        else if (newX == 0 && newY == 0 && transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().pAnim == PlayerAnimation.PlayerAnim.MOVE) {
+            transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.IDLE;
         }
 
         movement = new Vector2(newX, newY);

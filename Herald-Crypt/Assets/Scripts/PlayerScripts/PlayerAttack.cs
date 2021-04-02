@@ -88,6 +88,8 @@ public class PlayerAttack : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
         currentWepScript.Attack(transform.position, mousePos, rotation);
+
+        transform.GetChild(0).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.ATTACK;
     }
 
     void SwitchWeapon(float mouseScrollDelta)

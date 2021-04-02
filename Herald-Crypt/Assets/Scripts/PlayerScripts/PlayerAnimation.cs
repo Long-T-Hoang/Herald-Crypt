@@ -3,10 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour {
-    [SerializeField]
-    public Sprite[] animList;
+    public enum PlayerAnim {
+        IDLE,
+        MOVE,
+        ATTACK
+    }
+    public PlayerAnim pAnim;
 
-    public int playerAnimPos;
+    [SerializeField]
+    private float animCool;
+    [SerializeField]
+    private int animCount;
+
+    public Sprite[] animMoveList;
 
     void Start() {
         
@@ -16,13 +25,15 @@ public class PlayerAnimation : MonoBehaviour {
         //  Part - Rotate Sprite to Mouse Pos
         PivotPlayer();
 
-        //  Part - Animate Player Movement
-        if (playerAnimPos == 1) {
-            GetComponent<SpriteRenderer>().sprite = animList[0];
-        }
+        switch(pAnim) {
+            case PlayerAnim.MOVE:
+                MoveAnim();
+                break;
 
-        else if (playerAnimPos == 2) {
-            GetComponent<SpriteRenderer>().sprite = animList[1];
+            case PlayerAnim.ATTACK:
+                animCount = 0;
+                AttackAnim();
+                break;
         }
     }
 
@@ -34,5 +45,48 @@ public class PlayerAnimation : MonoBehaviour {
 
         float mouseDiffAng = Mathf.Atan2(mouseDiff.y, mouseDiff.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, mouseDiffAng));
+    }
+
+    // MainMethod - MoveAnim
+    private void MoveAnim() {
+        if (animCool < 0) {
+            animCool = 0.25f;
+            
+            if (animCount < (animMoveList.Length - 1)) {
+                animCount++;
+            }
+
+            else {
+                animCount = 0;
+            }
+        }
+
+        else {
+            animCool -= Time.deltaTime;
+        }
+
+        GetComponent<SpriteRenderer>().sprite = animMoveList[animCount];
+    }
+
+    //  MainMethod - AttackAnim
+    private void AttackAnim() {
+        if (animCool < 0) {
+            animCool = 0.25f;
+            
+            if (animCount < 1) {
+                animCount++;
+            }
+
+            else {
+                animCount = 0;
+                pAnim = PlayerAnim.MOVE;
+            }
+        }
+
+        else {
+            animCool -= Time.deltaTime;
+        }
+
+        GetComponent<SpriteRenderer>().sprite = animMoveList[animCount];
     }
 }
