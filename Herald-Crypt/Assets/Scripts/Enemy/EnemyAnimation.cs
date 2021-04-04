@@ -67,12 +67,11 @@ public class EnemyAnimation : MonoBehaviour {
     private void AttackAnim() {
         if (animCool < 0) {
             animCool = 0.1f;
-            
-            if (animCount < 1) {
-                animCount++;
-            }
 
-            else {
+            animCount++;
+
+            if (animCount >= animAttackList.Length)
+            { 
                 animCount = 0;
                 transform.parent.GetComponent<EnemyBehavior>().currentState = EnemyBehavior.EnemyState.IDLE;
             }

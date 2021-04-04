@@ -8,9 +8,13 @@ public class Weapons : MonoBehaviour
     public GameObject prefabRef;
 
     // Stats
+    [SerializeField]
     protected float atkCooldown;
+    [SerializeField]
     protected int attackPower;
+    [SerializeField]
     protected float range;
+    [SerializeField]
     protected float speed;
 
     public float AtkCooldown

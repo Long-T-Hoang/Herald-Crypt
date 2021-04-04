@@ -61,7 +61,9 @@ public class EnemyPathfinding : MonoBehaviour
             behaviorScript.currentState = EnemyBehavior.EnemyState.IDLE;
         }
 
-        return playerCollider.gameObject;
+        if (playerCollider != null)
+            return playerCollider.gameObject;
+        else return null;
     }
 
     // Execute follow state functions to be called in main behaviour script
@@ -117,6 +119,10 @@ public class EnemyPathfinding : MonoBehaviour
                 SetPath(temp);
             }
         }
+        else
+        {
+            path = null;
+        }
     }
 
     private void SetPath(List<PathNode> temp)
@@ -136,6 +142,8 @@ public class EnemyPathfinding : MonoBehaviour
         }
         else
         {
+            currentNode++;
+
             if (currentNode >= path.Count - 1)
             {
                 path = null;
@@ -145,8 +153,6 @@ public class EnemyPathfinding : MonoBehaviour
 
                 return;
             }
-
-            currentNode++;
         }
     }
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    public GameObject enemy;
+    public GameObject enemyPref;
 
     RoomStats roomStat;
     List<GameObject> enemies;
@@ -52,9 +52,14 @@ public class EnemyManager : MonoBehaviour
 
         for(int i = 0; i < rooms.Length; i++)
         {
-            GameObject enemyInstance = Instantiate(enemy, rooms[i].transform.position, Quaternion.identity, this.transform);
+            GameObject enemyInstance = Instantiate(enemyPref, rooms[i].transform.position, Quaternion.identity, this.transform);
             enemyInstance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
             enemies.Add(enemyInstance);
         }
+    }
+
+    private void SpawnWeapons()
+    {
+
     }
 }

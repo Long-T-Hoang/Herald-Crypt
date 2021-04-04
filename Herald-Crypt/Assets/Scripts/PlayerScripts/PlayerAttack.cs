@@ -89,7 +89,7 @@ public class PlayerAttack : MonoBehaviour
 
         currentWepScript.Attack(transform.position, mousePos, rotation);
 
-        transform.GetChild(0).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.ATTACK;
+        transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.ATTACK;
     }
 
     void SwitchWeapon(float mouseScrollDelta)
