@@ -94,8 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea54a5eb4bb424f47a4c456392ee3bce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 0
-  attackRange: 0
+  attackPower: 1
+  attackRange: 0.5
   currentState: 0
 --- !u!114 &5867376013903359284
 MonoBehaviour:

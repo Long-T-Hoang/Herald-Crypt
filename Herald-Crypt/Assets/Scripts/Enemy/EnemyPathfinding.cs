@@ -66,6 +66,30 @@ public class EnemyPathfinding : MonoBehaviour
         else return null;
     }
 
+    public float DistanceToPlayer()
+    {
+        float distance = 0.0f;
+
+        playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
+
+        if(playerCollider != null)
+        {
+            distance = Vector3.Distance(playerCollider.transform.position, transform.position);
+        }
+
+        return distance;
+    }
+
+    public float DistanceToPlayer(out GameObject player)
+    {
+        float distance = DistanceToPlayer();
+
+        if (playerCollider != null) player = playerCollider.gameObject;
+        else player = null;
+
+        return distance;
+    }
+
     // Execute follow state functions to be called in main behaviour script
     public void FollowState()
     {
@@ -75,7 +99,8 @@ public class EnemyPathfinding : MonoBehaviour
         // Or when path is null
         FindPath();
 
-        if (path != null)
+        // Move if path is not null and consist of more than 1 tile
+        if (path != null && path.Count > 1)
         {
             MoveToPlayer();
         }
@@ -87,17 +112,12 @@ public class EnemyPathfinding : MonoBehaviour
         // When player is in vision
         if (playerCollider != null)
         {
-            // Find and assign path to temporary list
-            List<PathNode> temp = pathFinding.FindPath(transform.position, playerCollider.transform.position);
+            // If path is empty assign path or player position change
+            if (path == null || pathFinding.NodeGrid.WorldToCellPos(playerCollider.transform.position) != path[path.Count - 1].cellPos)
+            {
+                // Find and assign path to temporary list
+                List<PathNode> temp = pathFinding.FindPath(transform.position, playerCollider.transform.position);
 
-            // If path is empty assign path
-            if (path == null)
-            {
-                SetPath(temp);
-            }
-            // If player grid position and destination grid position is different, assign path
-            else if (pathFinding.NodeGrid.WorldToCellPos(playerCollider.transform.position) != path[path.Count - 1].cellPos)
-            {
                 SetPath(temp);
             }
         }
@@ -105,17 +125,12 @@ public class EnemyPathfinding : MonoBehaviour
         // Use last seen position
         else if (lastSeenPos != null && lastSeenPos != transform.position)
         {
-            // Find and assign path to temporary list
-            List<PathNode> temp = pathFinding.FindPath(transform.position, lastSeenPos);
+            // If path is empty assign path or last seen position change
+            if (path == null || pathFinding.NodeGrid.WorldToCellPos(lastSeenPos) != path[path.Count - 1].cellPos)
+            {
+                // Find and assign path to temporary list
+                List<PathNode> temp = pathFinding.FindPath(transform.position, lastSeenPos);
 
-            // If path is empty assign path
-            if (path == null)
-            {
-                SetPath(temp);
-            }
-            // If last seen grid position and destination grid position is different, assign path
-            else if (pathFinding.NodeGrid.WorldToCellPos(lastSeenPos) != path[path.Count - 1].cellPos)
-            {
                 SetPath(temp);
             }
         }

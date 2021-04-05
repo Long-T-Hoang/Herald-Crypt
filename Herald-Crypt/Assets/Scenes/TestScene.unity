@@ -572,7 +572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 221, y: 206}
+  m_AnchoredPosition: {x: 467, y: 206}
   m_SizeDelta: {x: 220, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1272646178
@@ -973,7 +973,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -303, y: 214}
+  m_AnchoredPosition: {x: -179, y: 214}
   m_SizeDelta: {x: 200, y: 33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1649318492
@@ -1603,6 +1603,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
+      propertyPath: moneyUI
+      value: 
+      objectReference: {fileID: 1715764518}
+    - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
+      propertyPath: scoreUI
+      value: 
+      objectReference: {fileID: 1272646176}
+    - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
+      propertyPath: healthUI
+      value: 
+      objectReference: {fileID: 1649318490}
+    - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
       propertyPath: moneyTxt
       value: 
       objectReference: {fileID: 1715764520}
@@ -1614,6 +1626,10 @@ PrefabInstance:
       propertyPath: healthTxt
       value: 
       objectReference: {fileID: 1649318492}
+    - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 964207064}
     - target: {fileID: 4197267764327167568, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: animList.Array.size
@@ -1768,6 +1784,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267765328963005, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267765328963005, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267765328963005, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4175676450563206278, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}

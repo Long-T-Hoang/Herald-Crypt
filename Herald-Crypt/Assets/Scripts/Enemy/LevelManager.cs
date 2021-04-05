@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -61,5 +62,10 @@ public class LevelManager : MonoBehaviour
     private void SpawnWeapons()
     {
 
+    }
+
+    public void loadEndScreen()
+    {
+        SceneManager.LoadScene(2);
     }
 }

@@ -15,6 +15,8 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private float attackRange;
 
+    private const float ATK_COOLDOWN = 1.0f;
+    private float attackTimer;
     // Possible states of enemy
     public enum EnemyState
     {
@@ -32,6 +34,8 @@ public class EnemyBehavior : MonoBehaviour
     {
         pfScript = GetComponent<EnemyPathfinding>();
         currentState = EnemyState.IDLE;
+
+        attackTimer = 0.0f;
     }
 
     // Update is called once per frame
@@ -45,6 +49,11 @@ public class EnemyBehavior : MonoBehaviour
 
             case EnemyState.FOLLOW:
                 pfScript.FollowState();
+
+                if(pfScript.DistanceToPlayer() < attackRange)
+                {
+                    currentState = EnemyState.ATTACK;
+                }
                 break;
 
             case EnemyState.ATTACK:
@@ -58,13 +67,22 @@ public class EnemyBehavior : MonoBehaviour
 
     private void Attack()
     {
-        player = pfScript.CheckSurrounding();
+        attackTimer += Time.deltaTime;
 
-        if(Vector3.Distance(player.transform.position, transform.position) <= attackRange)
+        float distance = pfScript.DistanceToPlayer(out player);
+
+        if(player != null && distance <= attackRange && attackTimer >= ATK_COOLDOWN)
         {
             Debug.Log("Attack");
+            attackTimer = 0.0f;
+            player.GetComponent<PlayerStats>().Damaged(attackPower);
         }
 
+        if(distance > attackRange)
+        {
+            attackTimer = 0.0f;
+            currentState = EnemyState.FOLLOW;
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

@@ -81,6 +81,6 @@ public class EnemyAnimation : MonoBehaviour {
             animCool -= Time.deltaTime;
         }
 
-        GetComponent<SpriteRenderer>().sprite = animAttackList[animCount];
+        //GetComponent<SpriteRenderer>().sprite = animAttackList[animCount];
     }
 }
