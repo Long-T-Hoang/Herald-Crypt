@@ -114,8 +114,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPower: 2
   attackRange: 1.5
+  lineOfSightRay:
+    serializedVersion: 2
+    m_Bits: 257
   currentState: 0
-  projectile: {fileID: 4496424965931409908, guid: 61e4195cbc0c6b847a5b92d767f8f049,
+  projectile: {fileID: 4496424965931409908, guid: 7dca2f2c4bc0f94478acb88a2a7e03ee,
     type: 3}
   projectileSpeed: 5
 --- !u!1 &7756309492480127116
@@ -213,9 +216,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animCool: 0
-  animCount: 0
+  currentAnimFrame: 0
   player: {fileID: 0}
   animMoveList:
   - {fileID: 21300000, guid: b44de805acb09e742a4ff11bc3fe157a, type: 3}
   - {fileID: 21300000, guid: c3c8ba5653ec07a4a86642a488b73a9b, type: 3}
-  animAttackList: []
+  animAttackList:
+  - {fileID: 21300000, guid: b44de805acb09e742a4ff11bc3fe157a, type: 3}
+  - {fileID: 21300000, guid: c3c8ba5653ec07a4a86642a488b73a9b, type: 3}

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public GameObject enemyPref;
+    public GameObject[] enemyPref;
 
     RoomStats roomStat;
     List<GameObject> enemies;
@@ -53,7 +53,8 @@ public class LevelManager : MonoBehaviour
 
         for(int i = 0; i < rooms.Length; i++)
         {
-            GameObject enemyInstance = Instantiate(enemyPref, rooms[i].transform.position, Quaternion.identity, this.transform);
+            int randInt = Random.Range(0, enemyPref.Length);
+            GameObject enemyInstance = Instantiate(enemyPref[randInt], rooms[i].transform.position, Quaternion.identity, this.transform);
             enemyInstance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
             enemies.Add(enemyInstance);
         }

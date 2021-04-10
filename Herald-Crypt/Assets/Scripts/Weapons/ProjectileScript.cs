@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ProjectileScript : MonoBehaviour
 {
+    [SerializeField]
+    private string[] onDestroyTag;
+
     // Stats
     private float speed;
     private int attackPower;
@@ -20,6 +23,11 @@ public class ProjectileScript : MonoBehaviour
     // Timer
     //private float timer;
     
+    public int AttackPower
+    {
+        get { return attackPower; }
+    }
+
     // Constructor
     public void SetStat(float range, float speed, int attackPower)
     {
@@ -61,13 +69,12 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.CompareTag("Enemy"))
+        foreach(string str in onDestroyTag)
         {
-            Destroy(gameObject);
-        }
-        if(collision.transform.CompareTag("Wall"))
-        {
-            Destroy(gameObject);
+            if(collision.CompareTag(str))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

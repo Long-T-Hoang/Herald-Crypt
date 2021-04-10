@@ -5,13 +5,13 @@ using UnityEditor;
 
 public class EnemyBehavior : MonoBehaviour
 {
-    EnemyPathfinding pfScript;
+    protected EnemyPathfinding pfScript;
 
-    GameObject player;
+    protected GameObject player;
 
     [Header("Enemy stats")]
     [SerializeField]
-    private int attackPower;
+    protected int attackPower;
     [SerializeField]
     protected float attackRange;
 
@@ -21,6 +21,11 @@ public class EnemyBehavior : MonoBehaviour
 
     // Ref to animation script
     EnemyAnimation anim;
+
+    // Line of sight
+    RaycastHit2D hit;
+    [SerializeField]
+    LayerMask lineOfSightRay;
 
     // Possible states of enemy
     public enum EnemyState
@@ -35,16 +40,18 @@ public class EnemyBehavior : MonoBehaviour
     public EnemyState currentState;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         pfScript = GetComponent<EnemyPathfinding>();
         currentState = EnemyState.IDLE;
 
         attackTimer = 0.0f;
+
+        anim = GetComponentInChildren<EnemyAnimation>();
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         attackTimer += Time.deltaTime;
 
@@ -57,7 +64,9 @@ public class EnemyBehavior : MonoBehaviour
             case EnemyState.FOLLOW:
                 if(pfScript.DistanceToPlayer() < attackRange)
                 {
+                    anim.ResetAnimationFrame();
                     currentState = EnemyState.ATTACK;
+                    break;
                 }
                 pfScript.FollowState();
                 break;
@@ -84,7 +93,6 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     currentState = EnemyState.FOLLOW;
                 }
-                }
                 break;
 
             default:
@@ -92,27 +100,26 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    private void Attack()
+    protected virtual void Attack()
     {
-        attackTimer += Time.deltaTime;
-
         float distance = pfScript.DistanceToPlayer(out player);
 
-        if(player != null && distance <= attackRange && attackTimer >= ATK_COOLDOWN)
+        if (distance > attackRange)
+        {
+            attackTimer = 0.0f;
+            currentState = EnemyState.FOLLOW;
+        }
+
+        if (player != null && distance <= attackRange && attackTimer >= ATK_COOLDOWN)
         {
             Debug.Log("Attack");
             attackTimer = 0.0f;
             player.GetComponent<PlayerStats>().Damaged(attackPower);
         }
 
-        if(distance > attackRange)
-        {
-            attackTimer = 0.0f;
-            currentState = EnemyState.FOLLOW;
-        }
     }
     
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<Collider2D>().CompareTag("Projectiles"))
         {

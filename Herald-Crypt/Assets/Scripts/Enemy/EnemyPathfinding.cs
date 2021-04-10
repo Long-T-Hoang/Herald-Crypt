@@ -68,7 +68,7 @@ public class EnemyPathfinding : MonoBehaviour
 
     public float DistanceToPlayer()
     {
-        float distance = 0.0f;
+        float distance = detectionRange;
 
         playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
 
@@ -164,7 +164,7 @@ public class EnemyPathfinding : MonoBehaviour
                 path = null;
                 currentNode = 0;
 
-                behaviorScript.currentState = EnemyBehavior.EnemyState.ATTACK;
+                //behaviorScript.currentState = EnemyBehavior.EnemyState.ATTACK;
 
                 return;
             }
