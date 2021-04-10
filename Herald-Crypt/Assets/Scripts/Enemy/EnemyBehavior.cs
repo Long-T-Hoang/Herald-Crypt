@@ -13,8 +13,6 @@ public class EnemyBehavior : MonoBehaviour
     [SerializeField]
     private int attackPower;
     [SerializeField]
-<<<<<<< HEAD
-<<<<<<< HEAD
     protected float attackRange;
 
     // Attack timer and cooldown
@@ -28,15 +26,7 @@ public class EnemyBehavior : MonoBehaviour
 
     // Ref to animation script
     EnemyAnimation anim;
-=======
-    private float attackRange;
->>>>>>> parent of 6a74da8 (Added new enemy type)
-=======
-    private float attackRange;
->>>>>>> parent of 6a74da8 (Added new enemy type)
 
-    private const float ATK_COOLDOWN = 1.0f;
-    private float attackTimer;
     // Possible states of enemy
     public enum EnemyState
     {
@@ -61,37 +51,21 @@ public class EnemyBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-<<<<<<< HEAD
-<<<<<<< HEAD
         attackTimer += Time.deltaTime;
         switch (currentState)
-=======
-        switch(currentState)
->>>>>>> parent of 6a74da8 (Added new enemy type)
-=======
-        switch(currentState)
->>>>>>> parent of 6a74da8 (Added new enemy type)
         {
             case EnemyState.IDLE:
                 pfScript.CheckSurrounding();
                 break;
 
             case EnemyState.FOLLOW:
-<<<<<<< HEAD
-<<<<<<< HEAD
                 Debug.Log(currentState);
-                if (pfScript.DistanceToPlayer() < attackRange)
-=======
-=======
->>>>>>> parent of 6a74da8 (Added new enemy type)
-                pfScript.FollowState();
 
                 if(pfScript.DistanceToPlayer() < attackRange)
->>>>>>> parent of 6a74da8 (Added new enemy type)
                 {
                     currentState = EnemyState.ATTACK;
-<<<<<<< HEAD
                 }
+                pfScript.FollowState();
                 break;
 
             case EnemyState.ATTACK:
