@@ -50,9 +50,9 @@ public class EnemyPathfinding : MonoBehaviour
             lastSeenPos = playerCollider.transform.position;
             behaviorScript.currentState = EnemyBehavior.EnemyState.FOLLOW;
         }
-        else if(lastSeenPos == transform.position)
+        else if(lastSeenPos != transform.position)
         {
-            behaviorScript.currentState = EnemyBehavior.EnemyState.IDLE;
+            behaviorScript.currentState = EnemyBehavior.EnemyState.FOLLOW;
         }
 
         if (playerCollider != null)
@@ -92,6 +92,8 @@ public class EnemyPathfinding : MonoBehaviour
         // Look for player if the last path node pos is different from player current node pos
         // Or when path is null
         FindPath();
+
+        if (path == null) Debug.Log("path is null");
 
         // Move if path is not null and consist of more than 1 tile
         if (path != null && path.Count > 1)
@@ -158,7 +160,7 @@ public class EnemyPathfinding : MonoBehaviour
                 path = null;
                 currentNode = 0;
 
-                behaviorScript.currentState = EnemyBehavior.EnemyState.ATTACK;
+                //behaviorScript.currentState = EnemyBehavior.EnemyState.ATTACK;
 
                 return;
             }

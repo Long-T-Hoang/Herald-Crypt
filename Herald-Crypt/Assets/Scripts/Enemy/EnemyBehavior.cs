@@ -20,6 +20,11 @@ public class EnemyBehavior : MonoBehaviour
     protected const float ATK_COOLDOWN = 1.0f;
     protected float attackTimer;
 
+    // Ray cast for line of vision
+    private RaycastHit2D hit;
+    [SerializeField]
+    private LayerMask lineOfSightRay;
+
     // Ref to animation script
     EnemyAnimation anim;
 
@@ -51,7 +56,6 @@ public class EnemyBehavior : MonoBehaviour
     protected virtual void Update()
     {
         attackTimer += Time.deltaTime;
-
         switch (currentState)
         {
             case EnemyState.IDLE:
@@ -59,7 +63,8 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case EnemyState.FOLLOW:
-                if(pfScript.DistanceToPlayer() < attackRange)
+                Debug.Log(currentState);
+                if (pfScript.DistanceToPlayer() < attackRange)
                 {
                     anim.ResetAnimationFrame();
                     currentState = EnemyState.ATTACK;
@@ -71,7 +76,28 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case EnemyState.ATTACK:
-                Attack();
+                player = pfScript.CheckSurrounding(); 
+
+                if(player == null)
+                {
+                    anim.ResetAnimationFrame();
+                    break;
+                }
+
+                Vector2 direction = player.transform.position - transform.position;
+                float distance = direction.magnitude;
+
+                hit = Physics2D.Raycast(transform.position, direction, distance, lineOfSightRay);
+
+                if (hit.collider != null && hit.collider.CompareTag("Player"))
+                {
+                    Attack();
+                }
+                else
+                {
+                    currentState = EnemyState.FOLLOW;
+                }
+
                 break;
 
             default:
