@@ -14,6 +14,7 @@ public class EnemyBehavior : MonoBehaviour
     private int attackPower;
     [SerializeField]
 <<<<<<< HEAD
+<<<<<<< HEAD
     protected float attackRange;
 
     // Attack timer and cooldown
@@ -27,6 +28,9 @@ public class EnemyBehavior : MonoBehaviour
 
     // Ref to animation script
     EnemyAnimation anim;
+=======
+    private float attackRange;
+>>>>>>> parent of 6a74da8 (Added new enemy type)
 =======
     private float attackRange;
 >>>>>>> parent of 6a74da8 (Added new enemy type)
@@ -58,8 +62,12 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         attackTimer += Time.deltaTime;
         switch (currentState)
+=======
+        switch(currentState)
+>>>>>>> parent of 6a74da8 (Added new enemy type)
 =======
         switch(currentState)
 >>>>>>> parent of 6a74da8 (Added new enemy type)
@@ -70,15 +78,19 @@ public class EnemyBehavior : MonoBehaviour
 
             case EnemyState.FOLLOW:
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Debug.Log(currentState);
                 if (pfScript.DistanceToPlayer() < attackRange)
 =======
+=======
+>>>>>>> parent of 6a74da8 (Added new enemy type)
                 pfScript.FollowState();
 
                 if(pfScript.DistanceToPlayer() < attackRange)
 >>>>>>> parent of 6a74da8 (Added new enemy type)
                 {
                     currentState = EnemyState.ATTACK;
+<<<<<<< HEAD
                 }
                 break;
 
@@ -104,6 +116,10 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     currentState = EnemyState.FOLLOW;
                 }
+=======
+                }
+                break;
+>>>>>>> parent of 6a74da8 (Added new enemy type)
 
                 break;
 
