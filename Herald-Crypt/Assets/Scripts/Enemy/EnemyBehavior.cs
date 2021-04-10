@@ -19,11 +19,6 @@ public class EnemyBehavior : MonoBehaviour
     protected const float ATK_COOLDOWN = 1.0f;
     protected float attackTimer;
 
-    // Ray cast for line of vision
-    private RaycastHit2D hit;
-    [SerializeField]
-    private LayerMask lineOfSightRay;
-
     // Ref to animation script
     EnemyAnimation anim;
 
@@ -52,6 +47,7 @@ public class EnemyBehavior : MonoBehaviour
     void Update()
     {
         attackTimer += Time.deltaTime;
+
         switch (currentState)
         {
             case EnemyState.IDLE:
@@ -59,8 +55,6 @@ public class EnemyBehavior : MonoBehaviour
                 break;
 
             case EnemyState.FOLLOW:
-                Debug.Log(currentState);
-
                 if(pfScript.DistanceToPlayer() < attackRange)
                 {
                     currentState = EnemyState.ATTACK;
@@ -90,11 +84,7 @@ public class EnemyBehavior : MonoBehaviour
                 {
                     currentState = EnemyState.FOLLOW;
                 }
-=======
                 }
-                break;
->>>>>>> parent of 6a74da8 (Added new enemy type)
-
                 break;
 
             default:
