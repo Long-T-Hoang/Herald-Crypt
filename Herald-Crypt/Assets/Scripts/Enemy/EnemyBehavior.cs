@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[System.Serializable]
 public class EnemyBehavior : MonoBehaviour
 {
-    protected EnemyPathfinding pfScript;
-        
-    protected GameObject player;
+    EnemyPathfinding pfScript;
+
+    GameObject player;
 
     [Header("Enemy stats")]
     [SerializeField]
-    protected int attackPower;
+    private int attackPower;
     [SerializeField]
+<<<<<<< HEAD
     protected float attackRange;
 
     // Attack timer and cooldown
@@ -27,52 +27,59 @@ public class EnemyBehavior : MonoBehaviour
 
     // Ref to animation script
     EnemyAnimation anim;
+=======
+    private float attackRange;
+>>>>>>> parent of 6a74da8 (Added new enemy type)
 
+    private const float ATK_COOLDOWN = 1.0f;
+    private float attackTimer;
     // Possible states of enemy
     public enum EnemyState
     {
         IDLE,
         FOLLOW,
         ATTACK,
-        ROAM,
-        RETREAT
+        ROAM  
     }
 
     // Current state
     public EnemyState currentState;
 
     // Start is called before the first frame update
-    protected virtual void Start()
+    void Start()
     {
         pfScript = GetComponent<EnemyPathfinding>();
         currentState = EnemyState.IDLE;
 
-        attackTimer = ATK_COOLDOWN;
-
-        anim = gameObject.GetComponentInChildren<EnemyAnimation>();
+        attackTimer = 0.0f;
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    void Update()
     {
+<<<<<<< HEAD
         attackTimer += Time.deltaTime;
         switch (currentState)
+=======
+        switch(currentState)
+>>>>>>> parent of 6a74da8 (Added new enemy type)
         {
             case EnemyState.IDLE:
                 pfScript.CheckSurrounding();
                 break;
 
             case EnemyState.FOLLOW:
+<<<<<<< HEAD
                 Debug.Log(currentState);
                 if (pfScript.DistanceToPlayer() < attackRange)
-                {
-                    anim.ResetAnimationFrame();
-                    currentState = EnemyState.ATTACK;
-                    break;
-                }
-
+=======
                 pfScript.FollowState();
 
+                if(pfScript.DistanceToPlayer() < attackRange)
+>>>>>>> parent of 6a74da8 (Added new enemy type)
+                {
+                    currentState = EnemyState.ATTACK;
+                }
                 break;
 
             case EnemyState.ATTACK:
@@ -105,13 +112,15 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-    protected virtual void Attack()
+    private void Attack()
     {
+        attackTimer += Time.deltaTime;
+
         float distance = pfScript.DistanceToPlayer(out player);
 
         if(player != null && distance <= attackRange && attackTimer >= ATK_COOLDOWN)
         {
-            //Debug.Log("Attack");
+            Debug.Log("Attack");
             attackTimer = 0.0f;
             player.GetComponent<PlayerStats>().Damaged(attackPower);
         }
@@ -119,12 +128,11 @@ public class EnemyBehavior : MonoBehaviour
         if(distance > attackRange)
         {
             attackTimer = 0.0f;
-            anim.ResetAnimationFrame();
             currentState = EnemyState.FOLLOW;
         }
     }
     
-    protected void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<Collider2D>().CompareTag("Projectiles"))
         {

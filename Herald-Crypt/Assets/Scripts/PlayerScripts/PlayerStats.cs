@@ -50,13 +50,4 @@ public class PlayerStats : MonoBehaviour
             levelManager.GetComponent<LevelManager>().loadEndScreen();
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("EnemyProjectile"))
-        {
-            ProjectileScript temp = collision.GetComponent<ProjectileScript>();
-            Damaged(temp.AttackPower);
-        }
-    }
 }

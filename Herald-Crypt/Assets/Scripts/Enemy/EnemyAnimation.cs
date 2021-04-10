@@ -6,7 +6,7 @@ public class EnemyAnimation : MonoBehaviour {
     [SerializeField]
     private float animCool;
     [SerializeField]
-    private int currentAnimFrame;
+    private int animCount;
     [SerializeField]
     private GameObject player;
 
@@ -47,12 +47,12 @@ public class EnemyAnimation : MonoBehaviour {
         if (animCool < 0) {
             animCool = 0.25f;
             
-            if (currentAnimFrame < animMoveList.Length - 1) {
-                currentAnimFrame++;
+            if (animCount < 3) {
+                animCount++;
             }
 
             else {
-                currentAnimFrame = 0;
+                animCount = 0;
             }
         }
 
@@ -60,7 +60,7 @@ public class EnemyAnimation : MonoBehaviour {
             animCool -= Time.deltaTime;
         }
 
-        GetComponent<SpriteRenderer>().sprite = animMoveList[currentAnimFrame];
+        GetComponent<SpriteRenderer>().sprite = animMoveList[animCount];
     }
 
     // MainMethod - AttackAnim
@@ -68,11 +68,11 @@ public class EnemyAnimation : MonoBehaviour {
         if (animCool < 0) {
             animCool = 0.1f;
 
-            currentAnimFrame++;
+            animCount++;
 
-            if (currentAnimFrame >= animAttackList.Length - 1)
-            {
-                currentAnimFrame = 0;
+            if (animCount >= animAttackList.Length)
+            { 
+                animCount = 0;
                 transform.parent.GetComponent<EnemyBehavior>().currentState = EnemyBehavior.EnemyState.IDLE;
             }
         }
@@ -82,11 +82,5 @@ public class EnemyAnimation : MonoBehaviour {
         }
 
         //GetComponent<SpriteRenderer>().sprite = animAttackList[animCount];
-    }
-
-    // Reset current animation frame to 0
-    public void ResetAnimationFrame()
-    {
-        currentAnimFrame = 0;
     }
 }

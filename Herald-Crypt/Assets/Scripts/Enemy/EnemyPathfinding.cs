@@ -41,6 +41,12 @@ public class EnemyPathfinding : MonoBehaviour
         lastSeenPos = transform.position;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    
     public GameObject CheckSurrounding()
     {
         playerCollider = Physics2D.OverlapCircle(transform.position, detectionRange, playerMask.value);
