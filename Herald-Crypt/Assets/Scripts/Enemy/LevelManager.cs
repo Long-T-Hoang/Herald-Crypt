@@ -67,6 +67,6 @@ public class LevelManager : MonoBehaviour
 
     public void loadEndScreen()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(1);
     }
 }

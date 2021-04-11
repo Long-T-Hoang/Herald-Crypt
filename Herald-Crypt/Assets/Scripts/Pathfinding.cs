@@ -98,6 +98,12 @@ public class Pathfinding
                     continue;
                 }
 
+                // Continue if node adjacent to current and neighbor node is not walkable
+                if (!AvoidWall(currentNode, neighbourNode))
+                {
+                    continue;
+                }
+
                 // Calculate cost of current neighbour node
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
 
@@ -193,5 +199,21 @@ public class Pathfinding
         }
 
         return lowestCostNode;
+    }
+
+    // Return false if node adjacent to current and neighbor is not walkable
+    private bool AvoidWall(PathNode current, PathNode neighbor)
+    {
+        // Get mutually adjacent node
+        PathNode[] adjacents = new PathNode[2];
+        adjacents[0] = nodeGrid.GetGridObject(current.x, neighbor.y);
+        adjacents[1] = nodeGrid.GetGridObject(neighbor.x, current.y);
+
+        if(!adjacents[0].isWalkable || !adjacents[1].isWalkable)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
