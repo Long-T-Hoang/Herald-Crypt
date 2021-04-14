@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] enemyPref;
+    public GameObject[] weaponPref;
 
     RoomStats roomStat;
     List<GameObject> enemies;
