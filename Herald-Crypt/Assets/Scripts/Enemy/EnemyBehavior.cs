@@ -49,8 +49,6 @@ public class EnemyBehavior : MonoBehaviour
 
         attackTimer = 0.0f;
 
-        CR_running = false;
-
         anim = GetComponentInChildren<EnemyAnimation>();
     }
 
