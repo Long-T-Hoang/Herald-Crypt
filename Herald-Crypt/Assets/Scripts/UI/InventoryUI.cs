@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour
 
     [SerializeField]
     private GameObject[] inventorySlots;
-    private GameObject[] inventory;
+    private List<GameObject> inventory;
 
     private UnityEvent invUpdateEvent;
     private UnityEvent switchWeaponEvent;
@@ -56,9 +56,9 @@ public class InventoryUI : MonoBehaviour
         inventory = playerAtkScript.Inventory;
 
         // Loop through inventory and show sprite of current weapons in inventory
-        for (int i = 0; i < inventory.Length; i++)
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            if (inventory[i] != null)
+            if (inventory.Count > i)
             {
                 Image slotImage = inventorySlots[i].transform.GetChild(0).GetComponent<Image>();
                 SpriteRenderer sr = inventory[i].GetComponent<SpriteRenderer>();
@@ -68,6 +68,13 @@ public class InventoryUI : MonoBehaviour
                 slotImage.SetNativeSize();
                 slotImage.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             }
+            else
+            {
+                Image slotImage = inventorySlots[i].transform.GetChild(0).GetComponent<Image>();
+
+                slotImage.sprite = null; 
+                slotImage.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+            }
         }
 
         HighlightSlot();
@@ -76,7 +83,7 @@ public class InventoryUI : MonoBehaviour
     private void HighlightSlot()
     {
         // Change color of current slot to red
-        for(int i = 0; i < inventorySlots.Length; i++)
+        for(int i = 0; i < inventory.Count; i++)
         {
             Image currentSlot = inventorySlots[i].transform.GetChild(0).GetComponent<Image>();
 

@@ -9,8 +9,7 @@ public class PlayerAttack : MonoBehaviour
     private GameObject projectile;
 
     [Header("Weapon switch and inventory")]
-    [SerializeField]
-    private GameObject[] inventory;
+    private List<GameObject> inventory;
     [SerializeField]
     private GameObject inventoryUI;
     [SerializeField]
@@ -30,7 +29,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField]
     private LayerMask weaponMask;
 
-    public GameObject[] Inventory
+    public List<GameObject> Inventory
     {
         get { return inventory; }
     }
@@ -38,7 +37,8 @@ public class PlayerAttack : MonoBehaviour
     private void Awake()
     {
         // Set default weapon
-        inventory[0] = Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
+        inventory = new List<GameObject>();
+        inventory.Add(Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity));
         currentWepNum = 1;
     }
 
@@ -66,7 +66,7 @@ public class PlayerAttack : MonoBehaviour
         if(mouseScrollDelta != 0.0f) SwitchWeapon(mouseScrollDelta);
 
         // Attack on mouse left click
-        if(Input.GetMouseButton(0) && attackCooldownTimer <= 0.0f && inventory.Length > 0)
+        if(Input.GetMouseButton(0) && attackCooldownTimer <= 0.0f && inventory.Count > 0)
         {
             Attack();
 
@@ -81,7 +81,8 @@ public class PlayerAttack : MonoBehaviour
         }
 
         // Update inventory UI
-
+        //invUpdateEvent.Invoke();
+        UpdateInv();
     }
 
     void Attack()
@@ -102,8 +103,8 @@ public class PlayerAttack : MonoBehaviour
     {
         currentWepIndex += (int)mouseScrollDelta;
 
-        if (currentWepIndex < 0) currentWepIndex = currentWepNum - 1;
-        if (currentWepIndex >= WEAPON_COUNT || currentWepIndex >= currentWepNum) currentWepIndex = 0;
+        if (currentWepIndex < 0) currentWepIndex = inventory.Count - 1;
+        if (currentWepIndex >= WEAPON_COUNT || currentWepIndex >= inventory.Count) currentWepIndex = 0;
 
         currentWeapon = inventory[currentWepIndex];
         currentWepScript = currentWeapon.GetComponent<Weapons>();
@@ -119,7 +120,24 @@ public class PlayerAttack : MonoBehaviour
 
         GameObject weaponToAdd = weaponCollider.gameObject;
 
-        for(int i = 0; i < inventory.Length; i++)
+        // Hide weapon added
+        weaponToAdd.transform.position = weaponToAdd.transform.position - Vector3.forward * 10;
+
+        if (inventory.Count < WEAPON_COUNT)
+        {
+            inventory.Add(weaponToAdd);
+        }
+        else
+        {
+            inventory[currentWepIndex].transform.position = transform.position;
+            inventory.RemoveAt(currentWepIndex);
+            inventory.Insert(currentWepIndex, weaponToAdd);
+        }
+
+        invUpdateEvent.Invoke();
+
+        /*
+        for(int i = 0; i < inventory.Count; i++)
         {
             if(inventory[i] == null)
             {
@@ -131,14 +149,42 @@ public class PlayerAttack : MonoBehaviour
         }
 
         // Remove and put current weapon at player position then add weapon to inventory
-        inventory[currentWepIndex].transform.position = transform.position;
+        
         AddToInventory(currentWepIndex, weaponToAdd);
+        */
     }
 
     void AddToInventory(int index, GameObject weaponToAdd)
     {
         inventory[index] = weaponToAdd;
-        weaponToAdd.transform.position = weaponToAdd.transform.position - Vector3.forward * 10;
+        
+        
+        invUpdateEvent.Invoke();
+    }
+
+    void UpdateInv()
+    {
+        foreach(GameObject wep in inventory)
+        {
+            if(wep == null)
+            {
+                inventory.Remove(wep);
+
+                if(currentWeapon != null)
+                {
+                    currentWepIndex = inventory.IndexOf(currentWeapon);
+                }
+                else
+                {
+                    currentWepIndex = 0;
+                    currentWeapon = inventory[currentWepIndex];
+                    currentWepScript = currentWeapon.GetComponent<Weapons>();
+                }
+
+                break;
+            }
+        }
+
         invUpdateEvent.Invoke();
     }
 }
