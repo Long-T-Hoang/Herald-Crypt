@@ -18,14 +18,18 @@ public class Room_Manager : MonoBehaviour {
 
     private GameObject[,] roomGrid;
 
+    // Stats for generating grids for pathfinding
     public Vector2 lowest = new Vector2(999, 999);
     public Vector2 highest = new Vector2 (-999, -999);
+    public List<GameObject> roomList;
 
     void Start() {
-        CreateStringGrid();
+        //CreateStringGrid();
+
+        roomList = new List<GameObject>();
     }
 
-    private void CreateStringGrid() {
+    public void CreateStringGrid() {
         //string[,] stringGrid = new string[gridLength, gridLength];
 
         string[,] stringGrid = new string[3,3] {
@@ -48,18 +52,22 @@ public class Room_Manager : MonoBehaviour {
         for (int y = 0; y < roomGrid.GetLength(1); y++) {
             for (int x = 0; x < roomGrid.GetLength(0); x++) {
                 if (roomGrid[y, x] != null) {
-                    Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
+                    GameObject room = Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
 
                     lowest[0] = Mathf.Min(lowest[0], x * roomSize[0]);
                     lowest[1] = Mathf.Min(lowest[1], 0 - y * roomSize[1]);
 
                     highest[0] = Mathf.Max(highest[0], x * roomSize[0]);
                     highest[1] = Mathf.Max(highest[1], 0 - y * roomSize[1]);
+
+                    roomList.Add(room);
                 }
             }
         }
 
-
+        // Offset lowest for generating pathfinding grid
+        lowest.x -= roomSize.x / 2;
+        lowest.y -= roomSize.y / 2;
 
         /*
         for (int y = 0; y < roomGrid.Length(); y++) {

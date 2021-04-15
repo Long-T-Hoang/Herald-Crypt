@@ -7,23 +7,28 @@ public class LevelManager : MonoBehaviour
 {
     public GameObject[] enemyPref;
     public GameObject[] weaponPref;
+    private GameObject roomManager;
+    private Room_Manager roomManagerScript;
 
-    RoomStats roomStat;
-    List<GameObject> enemies;
-    List<GameObject> weapons;
-    Pathfinding pathfinding;
+    private List<GameObject> enemies;
+    private List<GameObject> weapons;
+    private Pathfinding pathfinding;
     bool spawned;
+
+    const int ROOM_WIDTH_IN_TILE = 11;
 
     // Start is called before the first frame update
     void Start()
     {
-        roomStat = Resources.FindObjectsOfTypeAll<RoomStats>()[0];
+        //roomStat = Resources.FindObjectsOfTypeAll<RoomStats>()[0];
         enemies = new List<GameObject>();
         spawned = false;
 
-        roomStat.ResetStat();
+        roomManager = GameObject.Find("RoomManager");
+        roomManagerScript = roomManager.GetComponent<Room_Manager>();
 
-        StartCoroutine(Spawn());
+        // Always put in bottom
+        Spawn();
     }
 
     // Update is called once per frame
@@ -31,28 +36,25 @@ public class LevelManager : MonoBehaviour
     {
     }
 
-    IEnumerator Spawn()
+    private void Spawn()
     {
-        yield return new WaitForSeconds(4.0f);
+        roomManagerScript.CreateStringGrid();
 
-        if (roomStat.finishGeneration && !spawned)
+        //roomStat.CalculateStat();
+        pathfinding = new Pathfinding(3 * ROOM_WIDTH_IN_TILE, 3 * ROOM_WIDTH_IN_TILE, 0.5f, roomManagerScript.lowest);
+
+        List<GameObject> rooms = roomManagerScript.roomList;
+
+        enemies = SpawnObjects(rooms, enemyPref, 0, 3);
+        weapons = SpawnObjects(rooms, weaponPref, 0, 3);
+
+        // Assign pathfinding to enemies
+        foreach(GameObject e in enemies)
         {
-            roomStat.CalculateStat();
-            pathfinding = new Pathfinding(roomStat.getWidthInTileNum(), roomStat.getHeightInTileNum(), 0.5f, roomStat.getLeftBottomPos());
-
-            GameObject[] rooms = roomStat.getObjectList();
-
-            enemies = SpawnObjects(rooms, enemyPref, 0, 3);
-            weapons = SpawnObjects(rooms, weaponPref, 0, 3);
-
-            // Assign pathfinding to enemies
-            foreach(GameObject e in enemies)
-            {
-                e.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
-            }
-             
-            spawned = true;
+            e.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
         }
+         
+        spawned = true;
     }
 
     private void LateUpdate()
@@ -79,11 +81,11 @@ public class LevelManager : MonoBehaviour
     /// <param name="objectList">Object list to store spawned objects</param>
     /// <param name="min">minimum number of object spawn in a room</param>
     /// <param name="max">maximum number of object spawn in a room</param>
-    private List<GameObject> SpawnObjects(GameObject[] rooms, GameObject[] prefabList, int min, int max)
+    private List<GameObject> SpawnObjects(List<GameObject> rooms, GameObject[] prefabList, int min, int max)
     {
         List<GameObject> objectList = new List<GameObject>();
 
-        for (int i = 0; i < rooms.Length; i++)
+        for (int i = 0; i < rooms.Count; i++)
         {
             int objectCount = Random.Range(min, max);
 
