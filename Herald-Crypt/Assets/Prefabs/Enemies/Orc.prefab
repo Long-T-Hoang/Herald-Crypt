@@ -96,6 +96,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPower: 1
   attackRange: 0.5
+  healthPoint: 5
   lineOfSightRay:
     serializedVersion: 2
     m_Bits: 257
@@ -221,3 +222,6 @@ MonoBehaviour:
   animAttackList:
   - {fileID: 21300000, guid: 323b123d319b74547ae5576a3b9e1849, type: 3}
   - {fileID: 21300000, guid: 0ef710be4c8133b4ba49ed8a844427dc, type: 3}
+  normalFilter: {r: 1, g: 1, b: 1, a: 1}
+  damageFilter: {r: 1, g: 0.21226418, b: 0.21226418, a: 1}
+  damagedAnimTime: 1

@@ -13,6 +13,11 @@ public class EnemyAnimation : MonoBehaviour {
     public Sprite[] animMoveList;
     public Sprite[] animAttackList;
 
+    [Header("Damaged animation")]
+    public Color normalFilter;
+    public Color damageFilter;
+    public float damagedAnimTime;
+
     void Start() {
         player = GameObject.Find("Player");
     }
@@ -89,5 +94,14 @@ public class EnemyAnimation : MonoBehaviour {
     public void ResetAnimationFrame()
     {
         currentAnimFrame = 0;
+    }
+
+    public IEnumerator DamageAnimation()
+    {
+        GetComponent<SpriteRenderer>().color = damageFilter;
+
+        yield return new WaitForSeconds(damagedAnimTime);
+
+        GetComponent<SpriteRenderer>().color = normalFilter;
     }
 }

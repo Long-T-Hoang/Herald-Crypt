@@ -14,6 +14,8 @@ public class EnemyBehavior : MonoBehaviour
     protected int attackPower;
     [SerializeField]
     protected float attackRange;
+    [SerializeField]
+    protected int healthPoint;
 
     // Attack timer and cooldown
     protected const float ATK_COOLDOWN = 1.0f;
@@ -46,6 +48,8 @@ public class EnemyBehavior : MonoBehaviour
         currentState = EnemyState.IDLE;
 
         attackTimer = 0.0f;
+
+        CR_running = false;
 
         anim = GetComponentInChildren<EnemyAnimation>();
     }
@@ -123,7 +127,14 @@ public class EnemyBehavior : MonoBehaviour
     {
         if (collision.GetComponent<Collider2D>().CompareTag("Projectiles"))
         {
-            Destroy(gameObject);
+            healthPoint -= collision.gameObject.GetComponent<ProjectileScript>().AttackPower;
+
+            StartCoroutine(anim.DamageAnimation());
+
+            if (healthPoint <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
