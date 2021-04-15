@@ -47,7 +47,7 @@ public class PlayerStats : MonoBehaviour
 
         if(health <= 0)
         {
-            levelManager.GetComponent<LevelManager>().loadEndScreen();
+            levelManager.GetComponent<LevelManager>().loadGameOverScreen();
         }
     }
 
