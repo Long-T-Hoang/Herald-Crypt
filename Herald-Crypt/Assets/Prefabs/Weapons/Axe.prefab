@@ -99,6 +99,11 @@ MonoBehaviour:
   projectile: {fileID: 4496424965931409908, guid: 0a0e759d447791644a67ef888251d6ae,
     type: 3}
   prefabRef: {fileID: 273559710773552211}
+  atkCooldown: 0.75
+  attackPower: 2
+  range: 2
+  speed: 5
+  usedCount: 5
 --- !u!50 &-6664079843241002906
 Rigidbody2D:
   serializedVersion: 4

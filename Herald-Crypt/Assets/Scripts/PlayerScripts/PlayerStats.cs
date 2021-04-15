@@ -16,16 +16,16 @@ public class PlayerStats : MonoBehaviour
     private Text healthTxt;
     private Text moneyTxt;
 
-    int score;
+    //int score;
     int health;
-    int money;
+    //int money;
 
     // Start is called before the first frame update
     void Start()
     {
-        score = 0;
+        //score = 0;
         health = 10;
-        money = 0;
+        //money = 0;
 
         // Already is a Text component
         //scoreTxt = GetComponent<Text>();
