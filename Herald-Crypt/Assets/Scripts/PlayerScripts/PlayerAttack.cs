@@ -79,6 +79,9 @@ public class PlayerAttack : MonoBehaviour
         {
             PickUpWeapon();
         }
+
+        // Update inventory UI
+
     }
 
     void Attack()
@@ -87,7 +90,10 @@ public class PlayerAttack : MonoBehaviour
         Vector3 direction = (mousePos - transform.position).normalized;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
 
-        currentWepScript.Attack(transform.position, mousePos, rotation);
+        if (currentWeapon != null)
+        {
+            currentWepScript.Attack(transform.position, mousePos, rotation);
+        }
 
         transform.GetChild(1).gameObject.GetComponent<PlayerAnimation>().pAnim = PlayerAnimation.PlayerAnim.ATTACK;
     }
