@@ -19,7 +19,6 @@ public class LevelManager : MonoBehaviour
     {
         roomStat = Resources.FindObjectsOfTypeAll<RoomStats>()[0];
         enemies = new List<GameObject>();
-        weapons = new List<GameObject>();
         spawned = false;
 
         roomStat.ResetStat();
@@ -43,8 +42,15 @@ public class LevelManager : MonoBehaviour
 
             GameObject[] rooms = roomStat.getObjectList();
 
-            SpawnEnemies(rooms);
-            SpawnObjects(rooms, weaponPref, weapons, 0, 3);
+            enemies = SpawnObjects(rooms, enemyPref, 0, 3);
+            weapons = SpawnObjects(rooms, weaponPref, 0, 3);
+
+            // Assign pathfinding to enemies
+            foreach(GameObject e in enemies)
+            {
+                e.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
+            }
+             
             spawned = true;
         }
     }
@@ -65,48 +71,6 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void SpawnEnemies(GameObject[] rooms)
-    {
-        for(int i = 0; i < rooms.Length; i++)
-        {
-            int enemyCount = Random.Range(0, 3);
-
-            for (int j = 0; j < enemyCount; j++)
-            {
-                float x = Random.Range(-1.75f, 1.75f);
-                float y = Random.Range(-1.75f, 1.75f);
-                int randInt = Random.Range(0, enemyPref.Length);
-
-                Vector3 position = rooms[i].transform.position + new Vector3(x, y, 0.0f);
-
-                GameObject enemyInstance = Instantiate(enemyPref[randInt], position, Quaternion.identity, this.transform);
-                enemyInstance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
-                enemies.Add(enemyInstance);
-            }
-        }
-    }
-
-    private void SpawnWeapons(GameObject[] rooms)
-    {
-        for (int i = 0; i < rooms.Length; i++)
-        {
-            int weaponCount = Random.Range(0, 3);
-
-            for (int j = 0; j < weaponCount; j++)
-            {
-                float x = Random.Range(-1.75f, 1.75f);
-                float y = Random.Range(-1.75f, 1.75f);
-                int randInt = Random.Range(0, weaponPref.Length);
-
-                Vector3 position = rooms[i].transform.position + new Vector3(x, y, 0.0f);
-
-                GameObject weaponInstance = Instantiate(weaponPref[randInt], position, Quaternion.identity, this.transform);
-                weaponInstance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
-                weapons.Add(weaponInstance);
-            }
-        }
-    }
-
     /// <summary>
     /// Spawn an object from prefab list in a room between min (inclusive) and max (exclusive)
     /// </summary>
@@ -115,8 +79,10 @@ public class LevelManager : MonoBehaviour
     /// <param name="objectList">Object list to store spawned objects</param>
     /// <param name="min">minimum number of object spawn in a room</param>
     /// <param name="max">maximum number of object spawn in a room</param>
-    private void SpawnObjects(GameObject[] rooms, GameObject[] prefabList, List<GameObject> objectList, int min, int max)
+    private List<GameObject> SpawnObjects(GameObject[] rooms, GameObject[] prefabList, int min, int max)
     {
+        List<GameObject> objectList = new List<GameObject>();
+
         for (int i = 0; i < rooms.Length; i++)
         {
             int objectCount = Random.Range(min, max);
@@ -130,10 +96,12 @@ public class LevelManager : MonoBehaviour
                 Vector3 position = rooms[i].transform.position + new Vector3(x, y, 0.0f);
 
                 GameObject instance = Instantiate(prefabList[randInt], position, Quaternion.identity, this.transform);
-                //instance.GetComponent<EnemyPathfinding>().pathFinding = pathfinding;
+                
                 objectList.Add(instance);
             }
         }
+
+        return objectList;
     }
 
     public void loadWinScreen()
