@@ -18,6 +18,9 @@ public class Room_Manager : MonoBehaviour {
 
     private GameObject[,] roomGrid;
 
+    public Vector2 lowest = new Vector2(999, 999);
+    public Vector2 highest = new Vector2 (-999, -999);
+
     void Start() {
         CreateStringGrid();
     }
@@ -46,9 +49,17 @@ public class Room_Manager : MonoBehaviour {
             for (int x = 0; x < roomGrid.GetLength(0); x++) {
                 if (roomGrid[y, x] != null) {
                     Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
+
+                    lowest[0] = Mathf.Min(lowest[0], x * roomSize[0]);
+                    lowest[1] = Mathf.Min(lowest[1], 0 - y * roomSize[1]);
+
+                    highest[0] = Mathf.Max(highest[0], x * roomSize[0]);
+                    highest[1] = Mathf.Max(highest[1], 0 - y * roomSize[1]);
                 }
             }
         }
+
+
 
         /*
         for (int y = 0; y < roomGrid.Length(); y++) {
