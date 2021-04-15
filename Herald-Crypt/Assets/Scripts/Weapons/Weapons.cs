@@ -16,6 +16,8 @@ public class Weapons : MonoBehaviour
     protected float range;
     [SerializeField]
     protected float speed;
+    [SerializeField]
+    protected int usedCount;
 
     public float AtkCooldown
     {
@@ -38,5 +40,12 @@ public class Weapons : MonoBehaviour
         GameObject proj = Instantiate(projectile, start, rotation) as GameObject;
 
         proj.GetComponent<ProjectileScript>().SetStat(range, speed, attackPower);
+
+        usedCount--;
+
+        if(usedCount <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
