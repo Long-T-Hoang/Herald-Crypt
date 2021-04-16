@@ -20,11 +20,11 @@ public class PlayerAttack : MonoBehaviour
     private const int WEAPON_COUNT = 3;
     private UnityEvent invUpdateEvent;
     private UnityEvent switchWepEvent;
-    private int currentWepNum;
 
     // Attack cooldown
     private float attackCooldownTimer;
 
+    public bool paused;
 
     [SerializeField]
     private LayerMask weaponMask;
@@ -39,7 +39,6 @@ public class PlayerAttack : MonoBehaviour
         // Set default weapon
         inventory = new List<GameObject>();
         inventory.Add(Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity));
-        currentWepNum = 1;
     }
 
     // Start is called before the first frame update
@@ -53,6 +52,8 @@ public class PlayerAttack : MonoBehaviour
         switchWepEvent = inventoryUI.GetComponent<InventoryUI>().SwitchWepEvent;
 
         SwitchWeapon(0.0f);
+
+        paused = false;
     }
 
     // Update is called once per frame
@@ -87,6 +88,8 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
+        if (paused) return;
+
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 direction = (mousePos - transform.position).normalized;
         Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
