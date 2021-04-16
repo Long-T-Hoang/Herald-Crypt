@@ -30,7 +30,7 @@ public class Room_Manager : MonoBehaviour {
         roomList = new List<GameObject>();
     }
 
-    private void CreateStringGrid() {
+    public void CreateStringGrid() {
         //  Part - Create String Grid
         if (gridLength < 3) {
             gridLength = 3;
@@ -147,17 +147,21 @@ public class Room_Manager : MonoBehaviour {
                     }
 
                     if (roomGrid[y, x] != null) {
-                        Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
+                        GameObject room = Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
 
                         lowest[0] = Mathf.Min(lowest[0], x * roomSize[0]);
                         lowest[1] = Mathf.Min(lowest[1], 0 - y * roomSize[1]);
 
                         highest[0] = Mathf.Max(highest[0], x * roomSize[0]);
                         highest[1] = Mathf.Max(highest[1], 0 - y * roomSize[1]);
+
+                        // add room to roomList for enemy spawning 
+                        roomList.Add(room);
                     }
                 }
             }
         }
+
     }
 
     private GameObject CR_Corner(int pType, string pStr) {
