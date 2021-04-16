@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91c5ed8e02fa8714491e21044fc7a59f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPower: 2
+  attackPower: 1
   attackRange: 1.5
   healthPoint: 1
   lineOfSightRay:

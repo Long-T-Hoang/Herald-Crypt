@@ -103,6 +103,8 @@ public class PlayerAttack : MonoBehaviour
     {
         currentWepIndex += (int)mouseScrollDelta;
 
+        if (inventory.Count <= 0) return;
+
         if (currentWepIndex < 0) currentWepIndex = inventory.Count - 1;
         if (currentWepIndex >= WEAPON_COUNT || currentWepIndex >= inventory.Count) currentWepIndex = 0;
 
@@ -173,6 +175,10 @@ public class PlayerAttack : MonoBehaviour
                 if(currentWeapon != null)
                 {
                     currentWepIndex = inventory.IndexOf(currentWeapon);
+                }
+                else if (inventory.Count <= 0)
+                {
+                    currentWepIndex = 0;
                 }
                 else
                 {

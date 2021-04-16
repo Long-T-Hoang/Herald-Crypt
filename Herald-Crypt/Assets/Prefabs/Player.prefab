@@ -98,6 +98,10 @@ MonoBehaviour:
   animCool: 0
   animCount: 0
   animMoveList: []
+  sr: {fileID: 0}
+  normalFilter: {r: 1, g: 1, b: 1, a: 1}
+  damagedFilter: {r: 1, g: 0.3254717, b: 0.3254717, a: 1}
+  damagedAnimDuration: 1
 --- !u!1 &4197267764797458292
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectile: {fileID: 4496424965931409908, guid: 0a0e759d447791644a67ef888251d6ae,
     type: 3}
-  inventory: []
   inventoryUI: {fileID: 0}
   defaultWeapon: {fileID: 0}
   currentWepIndex: 0
@@ -249,6 +252,10 @@ MonoBehaviour:
   animCool: 0
   animCount: 0
   animMoveList: []
+  sr: {fileID: 0}
+  normalFilter: {r: 0, g: 0, b: 0, a: 0}
+  damagedFilter: {r: 0, g: 0, b: 0, a: 0}
+  damagedAnimDuration: 0
 --- !u!1 &4197267765328962976
 GameObject:
   m_ObjectHideFlags: 0

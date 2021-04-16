@@ -16,9 +16,18 @@ public class PlayerAnimation : MonoBehaviour {
     private int animCount;
 
     public Sprite[] animMoveList;
+    private SpriteRenderer sr;
+
+    [Header("Damaged animation")]
+    [SerializeField]
+    private Color normalFilter;
+    [SerializeField]
+    private Color damagedFilter;
+    [SerializeField]
+    private float damagedAnimDuration;
 
     void Start() {
-        
+        sr = GetComponent<SpriteRenderer>();
     }
 
     void Update() {
@@ -65,7 +74,7 @@ public class PlayerAnimation : MonoBehaviour {
             animCool -= Time.deltaTime;
         }
 
-        GetComponent<SpriteRenderer>().sprite = animMoveList[animCount];
+        sr.sprite = animMoveList[animCount];
     }
 
     //  MainMethod - AttackAnim
@@ -87,6 +96,15 @@ public class PlayerAnimation : MonoBehaviour {
             animCool -= Time.deltaTime;
         }
 
-        GetComponent<SpriteRenderer>().sprite = animMoveList[animCount];
+        sr.sprite = animMoveList[animCount];
+    }
+
+    public IEnumerator DamagedAnimation()
+    {
+        sr.color = damagedFilter;
+
+        yield return new WaitForSeconds(damagedAnimDuration);
+
+        sr.color = normalFilter;
     }
 }

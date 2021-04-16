@@ -7,6 +7,7 @@ public class PlayerStats : MonoBehaviour
 {
     [SerializeField]
     private GameObject levelManager;
+    private PlayerAnimation anim;
 
     public GameObject scoreUI;
     public GameObject healthUI;
@@ -31,6 +32,8 @@ public class PlayerStats : MonoBehaviour
         //scoreTxt = GetComponent<Text>();
         healthTxt = healthUI.GetComponent<Text>();
         //moneyTxt = GetComponent<Text>();
+
+        anim = GetComponentInChildren<PlayerAnimation>();
     }
 
     // Update is called once per frame
@@ -44,6 +47,8 @@ public class PlayerStats : MonoBehaviour
     public void Damaged(int dmg)
     {
         health -= dmg;
+
+        StartCoroutine(anim.DamagedAnimation());
 
         if(health <= 0)
         {
