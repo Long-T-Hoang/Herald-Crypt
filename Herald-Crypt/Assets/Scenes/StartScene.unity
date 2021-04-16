@@ -925,10 +925,10 @@ MonoBehaviour:
 
     E to pick up weapons
 
-    Right mouse click to
-    attack
+    Left mouse click to attack
 
-    Mouse scroll to switch weapon
+    Mouse
+    scroll to switch weapon
 
     Kill all enemies to win'
   m_isRightToLeft: 0
