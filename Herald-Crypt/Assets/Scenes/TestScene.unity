@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &522823374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4197267764797458292, guid: 62bbe66ca385fdd47ae51f42b202c345,
+    type: 3}
+  m_PrefabInstance: {fileID: 4197267765467243343}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &724609089
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,6 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272f9da77f9b4ae4987161c99c6a9d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridLength: 0
   capRooms:
   - {fileID: 8009318592708772475, guid: 15de4bb0784432f46a50d78fd86175b3, type: 3}
   - {fileID: 3098290605038994176, guid: 3d4b32d17d311204c894c882c6241517, type: 3}
@@ -616,6 +623,7 @@ MonoBehaviour:
     type: 3}
   centerRoom: {fileID: 2932120991115121687, guid: 53b4aa0c5feed9f499f86dda0cbbda34,
     type: 3}
+  player: {fileID: 522823374}
   lowest: {x: 999, y: 999}
   highest: {x: -999, y: -999}
   roomList: []
@@ -1755,12 +1763,12 @@ PrefabInstance:
     - target: {fileID: 4197267764797458291, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4197267764797458291, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4197267764797458291, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
