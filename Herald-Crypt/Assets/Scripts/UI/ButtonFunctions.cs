@@ -7,6 +7,7 @@ public class ButtonFunctions : MonoBehaviour
 {
     [SerializeField]
     private GameObject instructionScreen;
+    public GameObject mainScreen;
 
     // Start is called before the first frame update
     void Start()
@@ -22,21 +23,23 @@ public class ButtonFunctions : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("TestScene");
     }
 
     public void OpenInstruction()
     {
         instructionScreen.SetActive(true);
+        mainScreen.SetActive(false);
     }
 
     public void CloseInstruction()
     {
         instructionScreen.SetActive(false);
+        mainScreen.SetActive(true);
     }
 
     public void ReturnToStartScreen()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("StartScene");
     }
 }
