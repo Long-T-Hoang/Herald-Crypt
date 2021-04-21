@@ -1,9 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Room_Manager : MonoBehaviour {
-    public int gridLength;
+    public int ringAmount;
 
     public List<GameObject> capRooms;       //0-TC, 1-BC, 2-LC, 3-RC
     public List<GameObject> cornerRooms;    //0-TL, 1-TR, 2-BL, 3-BR
@@ -17,6 +17,7 @@ public class Room_Manager : MonoBehaviour {
     private Vector2 roomSize = new Vector2(5.5f, 5.5f);
 
     public GameObject player;
+    private string[,] stringGrid;
     private GameObject[,] roomGrid;
 
     // Stats for generating grids for pathfinding
@@ -31,53 +32,430 @@ public class Room_Manager : MonoBehaviour {
     }
 
     public void CreateStringGrid() {
-        //  Part - Create String Grid
-        if (gridLength < 3) {
-            gridLength = 3;
+        //  Part - Create Ring Amount (Odd > 4)
+        if (ringAmount < 5) {
+            ringAmount = 5;
         }
 
-        string[,] stringGrid = new string[3,3] {
-            {"-", "r", "-"},
-            {"r", "r", "r"},
-            {"r", "r", "r"}
-        };
+        if (ringAmount % 2 == 0) {
+            ringAmount++;
+        }
 
-        // Part - Setup String Grid
-        /*
-        string[,] stringGrid = new string[gridLength, gridLength];
-        for (int y = 0; y < stringGrid.GetLength(1); y++) {
-            for (int x = 0; x < stringGrid.GetLength(0); x++) {
-                
+        stringGrid = new string[2 * ringAmount + 1, 2 * ringAmount + 1];
+        int midpoint = stringGrid.GetLength(0) / 2;
+
+        //  Part - Setup Base String Grid
+        for (int a = 0; a < stringGrid.GetLength(0); a++) {
+            for (int b = 0; b < stringGrid.GetLength(1); b++) {
+                stringGrid[a, b] = "-";
             }
         }
-        */
+
+        //  Part - Create String Grid
+        for (int i = 0; i < ringAmount; i++) {
+            Debug.Log("Ring : " + i);
+
+            //  Part - Starting 3x3
+            if (i == 0) {
+                stringGrid[midpoint, midpoint] = "r";
+
+                stringGrid[midpoint - 1, midpoint] = "r";
+                stringGrid[midpoint + 1, midpoint] = "r";
+                stringGrid[midpoint, midpoint - 1] = "r";
+                stringGrid[midpoint, midpoint + 1] = "r";
+
+                int rand1 = 1;//Random.Range(1, 2);
+                if (rand1 == 1) {
+                    stringGrid[midpoint - 1, midpoint - 1] = "r";
+                    stringGrid[midpoint + 1, midpoint + 1] = "r";
+                    //stringGrid[midpoint + 1, midpoint - 1] = "-";
+                    //stringGrid[midpoint - 1, midpoint + 1] = "-";
+                }
+                else if (rand1 == 2) {
+                    //stringGrid[midpoint - 1, midpoint - 1] = "-";
+                    //stringGrid[midpoint + 1, midpoint + 1] = "-";
+                    stringGrid[midpoint + 1, midpoint - 1] = "r";
+                    stringGrid[midpoint - 1, midpoint + 1] = "r";
+                }
+            }
+
+            else {
+                for (int y = -i; y <= i; y++) {
+                    for (int x = -i; x <= i; x++) {
+
+                        if (stringGrid[midpoint + x, midpoint + y] == "r") {
+                            //  Part - Top Row
+                            if (y == -i) {
+                                //  Part - TL Corner
+                                if (x == -i) {
+                                    CS_Corner(1, new Vector2(midpoint + x, midpoint + y));
+                                }
+
+                                //  Part - T Edge
+                                else if (x > -i && x < i) {
+                                    CS_CEdge(1, new Vector2(midpoint + x, midpoint + y));
+                                }
+
+                                //  Part - TR Corner
+                                else if (x == i) {
+                                    CS_Corner(2, new Vector2(midpoint + x, midpoint + y));
+                                }
+                            }
+
+                            //  Part - Middle Row
+                            else if (y > -i && y < i) {
+                                //  Part - L Edge
+                                if (x == -i) {
+                                    CS_CEdge(3, new Vector2(midpoint + x, midpoint + y));
+                                }
+
+                                //  Part - R Edge
+                                else if (x == i) {
+                                    CS_CEdge(4, new Vector2(midpoint + x, midpoint + y));
+                                }
+                            }
+
+                            //  Part - Bottom Row
+                            else if (y == i) {
+                                //  Part - BL Corner
+                                if (x == -i) {
+                                    CS_Corner(3, new Vector2(midpoint + x, midpoint + y));
+                                }
+
+                                //  Part - B Edge
+                                else if (x > -i && x < i) {
+                                    CS_CEdge(2, new Vector2(midpoint + x, midpoint + y));
+                                }
+
+                                //  Part - BR Corner
+                                else if (x == i) {
+                                    CS_Corner(4, new Vector2(midpoint + x, midpoint + y));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         CreateRoomGrid(stringGrid, stringGrid.GetLength(0), stringGrid.GetLength(1));
     }
 
-    private void CreateRoomGrid(string [,] pStr, int pW, int pH) {
-        /*
-        roomGrid = new GameObject[3, 3] {
-            {null, capRooms[0], null},
-            {cornerRooms[0], startRoom, cornerRooms[1]},
-            {cornerRooms[2], junctRooms[0], cornerRooms[3]}
-        };
-        */
+    private void CS_Corner(int pType, Vector2 pIndex) {
+        int rand = Random.Range(1, 4);
 
+        int pX = (int)pIndex.x;
+        int pY = (int)pIndex.y;
+
+        //Debug.Log(stringGrid.GetLength(0) + ", " + stringGrid.GetLength(1) + " : " + pIndex.x + ", " + pIndex.y);
+
+        switch(pType) {
+            //  Part - TL Corner
+            case 1:
+                switch(rand) {
+                    case 1:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        //stringGrid[pX, pY - 1]       = "-";
+
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 2:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        stringGrid[pX, pY - 1]       = "r";
+
+                        //stringGrid[pX - 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 3:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        //stringGrid[pX, pY - 1]       = "-";
+
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 4:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        stringGrid[pX, pY - 1]       = "r";
+
+                        //stringGrid[pX - 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - TR Corner
+            case 2:
+                switch(rand) {
+                    case 1:
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+                        //stringGrid[pX, pY - 1]       = "-";
+
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 2:
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+                        stringGrid[pX, pY - 1]       = "r";
+
+                        //stringGrid[pX + 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 3:
+                        stringGrid[pX + 1, pY - 1]   = "r";
+                        //stringGrid[pX, pY - 1]       = "-";
+
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 4:
+                        stringGrid[pX + 1, pY - 1]   = "r";
+                        stringGrid[pX, pY - 1]       = "r";
+
+                        //stringGrid[pX + 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - BL Corner
+            case 3:
+                switch(rand) {
+                    case 1:
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+                        //stringGrid[pX, pY + 1]       = "-";
+
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 2:
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+                        stringGrid[pX, pY + 1]       = "r";
+
+                        //stringGrid[pX - 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 3:
+                        stringGrid[pX - 1, pY + 1]   = "r";
+                        //stringGrid[pX, pY + 1]       = "-";
+
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 4:
+                        stringGrid[pX - 1, pY + 1]   = "r";
+                        stringGrid[pX, pY + 1]       = "r";
+
+                        //stringGrid[pX - 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - BR Corner
+            case 4:
+                switch(rand) {
+                    case 1:
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+                        //stringGrid[pX, pY + 1]       = "-";
+
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 2:
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+                        stringGrid[pX, pY + 1]       = "r";
+
+                        //stringGrid[pX + 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 3:
+                        stringGrid[pX + 1, pY + 1]   = "r";
+                        //stringGrid[pX, pY + 1]       = "-";
+
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+
+                    case 4:
+                        stringGrid[pX + 1, pY + 1]   = "r";
+                        stringGrid[pX, pY + 1]       = "r";
+
+                        //stringGrid[pX + 1, pY]       = "-";
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void CS_CEdge(int pType, Vector2 pIndex) {
+        int rand = Random.Range(1, 4);
+
+        int pX = (int)pIndex.x;
+        int pY = (int)pIndex.y;
+
+        switch(pType) {
+            //  Part - T Edge
+            case 1:
+                switch (rand) {
+                    case 1:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        stringGrid[pX, pY - 1]       = "r";
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 2:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        stringGrid[pX, pY - 1]       = "r";
+                        stringGrid[pX + 1, pY - 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 3:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        stringGrid[pX, pY - 1]       = "r";
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 4:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        stringGrid[pX, pY - 1]       = "r";
+                        stringGrid[pX + 1, pY - 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - B Edge
+            case 2:
+                switch (rand) {
+                    case 1:
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+                        stringGrid[pX, pY + 1]       = "r";
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 2:
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+                        stringGrid[pX, pY + 1]       = "r";
+                        stringGrid[pX + 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 3:
+                        stringGrid[pX - 1, pY + 1]   = "r";
+                        stringGrid[pX, pY + 1]       = "r";
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 4:
+                        stringGrid[pX - 1, pY + 1]   = "r";
+                        stringGrid[pX, pY + 1]       = "r";
+                        stringGrid[pX + 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - L Edge
+            case 3:
+                switch (rand) {
+                    case 1:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        stringGrid[pX - 1, pY]       = "r";
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 2:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        stringGrid[pX - 1, pY]       = "r";
+                        //stringGrid[pX - 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 3:
+                        //stringGrid[pX - 1, pY - 1]   = "-";
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX - 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 4:
+                        stringGrid[pX - 1, pY - 1]   = "r";
+                        stringGrid[pX - 1, pY]       = "r";
+                        stringGrid[pX - 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+
+            //  Part - R Edge
+            case 4:
+                switch (rand) {
+                    case 1:
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+                        stringGrid[pX + 1, pY]       = "r";
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 2:
+                        stringGrid[pX + 1, pY - 1]   = "r";
+                        stringGrid[pX + 1, pY]       = "r";
+                        //stringGrid[pX + 1, pY + 1]   = "-";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 3:
+                        //stringGrid[pX + 1, pY - 1]   = "-";
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX + 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                    case 4:
+                        stringGrid[pX + 1, pY - 1]   = "r";
+                        stringGrid[pX + 1, pY]       = "r";
+                        stringGrid[pX + 1, pY + 1]   = "r";
+
+                        stringGrid[pX, pY]           = "r";
+                        break;
+                }
+                break;
+        }
+    }
+
+    private void CreateRoomGrid(string [,] pStr, int pW, int pH) {
         // Part - Create String Grid, Setup Start Room, Move Player
         roomGrid = new GameObject[pW, pH];
+       
+        GameObject sRoom = Instantiate(startRoom, new Vector3(pW / 2 * roomSize[0], 0 - pH / 2 * roomSize[1], 0), Quaternion.identity);
+        roomList.Add(sRoom);
 
-        Vector2 halfPoint = new Vector2(roomGrid.GetLength(0) / 2, roomGrid.GetLength(1) / 2);
-        roomGrid[(int)halfPoint[0], (int)halfPoint[1]] = startRoom;
-
-        Instantiate(roomGrid[(int)halfPoint[0], (int)halfPoint[1]], new Vector3(halfPoint[0] * roomSize[0], 0 - halfPoint[1] * roomSize[1], 0), Quaternion.identity);
-
-        player.transform.position = new Vector3(halfPoint[0] * roomSize[0], 0 - halfPoint[1] * roomSize[1], 0);
+        player.transform.position = new Vector3(pW / 2 * roomSize[0], 0 - pH / 2 * roomSize[1], 0);
 
         // Part - Setup Room Grid
         string roomStr = "";
-
-        Debug.Log(roomGrid.GetLength(0) + ", " + roomGrid.GetLength(1));
 
         for (int y = 0; y < roomGrid.GetLength(1); y++) {
             for (int x = 0; x < roomGrid.GetLength(0); x++) {
@@ -86,7 +464,6 @@ public class Room_Manager : MonoBehaviour {
                     if (y == 0) {
                         //  SubPart - TL Corner
                         if (x == 0) {
-                            Debug.Log("TL Corner");
                             roomStr = pStr[x, y] + pStr[x + 1, y] + " " + pStr[x, y + 1];
                             roomGrid[y, x] = CR_Corner(1, roomStr);
                         }
@@ -114,7 +491,7 @@ public class Room_Manager : MonoBehaviour {
 
                         //  SubPart - Central
                         else if (x > 0 && x < roomGrid.GetLength(0) - 1) {
-                            roomStr = pStr[x - 1, y] + " " + pStr[x, y - 1] + pStr[x, y] + pStr[x, y + 1] + " " + pStr[x + 1, y];
+                            roomStr = pStr[x, y - 1] + " " + pStr[x - 1, y] + pStr[x, y] + pStr[x + 1, y] + " " + pStr[x, y + 1];
                             roomGrid[y, x] = CR_Center(roomStr);
                         }
 
@@ -148,20 +525,17 @@ public class Room_Manager : MonoBehaviour {
 
                     if (roomGrid[y, x] != null) {
                         GameObject room = Instantiate(roomGrid[y, x], new Vector3(x * roomSize[0], 0 - y * roomSize[1], 0), Quaternion.identity);
+                        roomList.Add(room);
 
                         lowest[0] = Mathf.Min(lowest[0], x * roomSize[0]);
                         lowest[1] = Mathf.Min(lowest[1], 0 - y * roomSize[1]);
 
                         highest[0] = Mathf.Max(highest[0], x * roomSize[0]);
                         highest[1] = Mathf.Max(highest[1], 0 - y * roomSize[1]);
-
-                        // add room to roomList for enemy spawning 
-                        roomList.Add(room);
                     }
                 }
             }
         }
-
     }
 
     private GameObject CR_Corner(int pType, string pStr) {
