@@ -196,4 +196,12 @@ public class PlayerAttack : MonoBehaviour
 
         invUpdateEvent.Invoke();
     }
+
+    public Weapons GetCurrentWeapon(){
+        if(currentWeapon.GetComponent<Weapons>() == null)
+        {
+            return null;
+        }
+        return currentWeapon.GetComponent<Weapons>();
+    }
 }
