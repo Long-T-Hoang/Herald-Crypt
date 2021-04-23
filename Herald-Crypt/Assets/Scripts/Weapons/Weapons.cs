@@ -48,4 +48,12 @@ public class Weapons : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public int Ammo(){
+        if(usedCount <= 0)
+        {
+            return 0;
+        }
+        return usedCount;
+    }
 }
