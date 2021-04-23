@@ -12,14 +12,20 @@ public class PlayerStats : MonoBehaviour
     public GameObject scoreUI;
     public GameObject healthUI;
     public GameObject moneyUI;
+    public GameObject ammoUI;
 
     private Text scoreTxt;
     private Text healthTxt;
     private Text moneyTxt;
+    private Text ammoTxt;
 
     //int score;
     int health;
     //int money;
+    int ammo;
+
+    private PlayerAttack playerAtt;
+    private Weapons currentWeap;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +38,11 @@ public class PlayerStats : MonoBehaviour
         //scoreTxt = GetComponent<Text>();
         healthTxt = healthUI.GetComponent<Text>();
         //moneyTxt = GetComponent<Text>();
+        ammoTxt = ammoUI.GetComponent<Text>();
+        ammoTxt.text = "";
 
         anim = GetComponentInChildren<PlayerAnimation>();
+        playerAtt = GetComponentInChildren<PlayerAttack>();
     }
 
     // Update is called once per frame
@@ -42,6 +51,8 @@ public class PlayerStats : MonoBehaviour
         //scoreTxt.text = "Score: " + score;
         healthTxt.text = "Health: " + health;
         //moneyTxt.text = "Money: " + money;
+
+        ShowAmmo();
     }
 
     public void Damaged(int dmg)
@@ -62,6 +73,20 @@ public class PlayerStats : MonoBehaviour
         {
             ProjectileScript temp = collision.GetComponent<ProjectileScript>();
             Damaged(temp.AttackPower);
+        }
+    }
+
+    private void ShowAmmo(){
+        if(playerAtt.GetCurrentWeapon() == null){
+            return;
+        }
+
+        currentWeap = playerAtt.GetCurrentWeapon();
+        ammoTxt.text = "Ammo: " + currentWeap.Ammo();
+
+        if(currentWeap.Ammo() <= 0)
+        {
+            ammoTxt.text = "";
         }
     }
 }
