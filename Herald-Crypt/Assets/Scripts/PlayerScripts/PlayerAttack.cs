@@ -123,7 +123,15 @@ public class PlayerAttack : MonoBehaviour
 
         if (weaponCollider == null) return;
 
-        GameObject weaponToAdd = weaponCollider.gameObject;
+        GameObject weaponToAdd;
+        if (weaponCollider.transform.position.z >= 0.0f)
+        {
+            weaponToAdd = weaponCollider.gameObject;
+        }
+        else
+        {
+            return;
+        }
 
         // Hide weapon added
         weaponToAdd.transform.position = weaponToAdd.transform.position - Vector3.forward * 10;
@@ -131,6 +139,12 @@ public class PlayerAttack : MonoBehaviour
         if (inventory.Count < WEAPON_COUNT)
         {
             inventory.Add(weaponToAdd);
+
+            if(inventory.Count == 1)
+            {
+                currentWeapon = weaponToAdd;
+                currentWepScript = currentWeapon.GetComponent<Weapons>();
+            }
         }
         else
         {
@@ -198,6 +212,11 @@ public class PlayerAttack : MonoBehaviour
     }
 
     public Weapons GetCurrentWeapon(){
+        if(currentWeapon == null)
+        {
+            return null;
+        }
+
         if(currentWeapon.GetComponent<Weapons>() == null)
         {
             return null;

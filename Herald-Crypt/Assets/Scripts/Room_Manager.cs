@@ -20,6 +20,9 @@ public class Room_Manager : MonoBehaviour {
     private string[,] stringGrid;
     private GameObject[,] roomGrid;
 
+    public int roomWidth;
+    public int roomHeight;
+
     // Stats for generating grids for pathfinding
     public Vector2 lowest = new Vector2(999, 999);
     public Vector2 highest = new Vector2 (-999, -999);
@@ -138,7 +141,10 @@ public class Room_Manager : MonoBehaviour {
             }
         }
 
-        CreateRoomGrid(stringGrid, stringGrid.GetLength(0), stringGrid.GetLength(1));
+        roomWidth = stringGrid.GetLength(0);
+        roomHeight = stringGrid.GetLength(1);
+
+        CreateRoomGrid(stringGrid, roomWidth, roomHeight);
     }
 
     private void CS_Corner(int pType, Vector2 pIndex) {

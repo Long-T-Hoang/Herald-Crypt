@@ -38,6 +38,7 @@ public class PlayerStats : MonoBehaviour
         //scoreTxt = GetComponent<Text>();
         healthTxt = healthUI.GetComponent<Text>();
         //moneyTxt = GetComponent<Text>();
+
         ammoTxt = ammoUI.GetComponent<Text>();
         ammoTxt.text = "";
 

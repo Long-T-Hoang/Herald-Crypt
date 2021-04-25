@@ -19,6 +19,8 @@ public class Weapons : MonoBehaviour
     [SerializeField]
     protected int usedCount;
 
+    public bool pickedUp;
+
     public float AtkCooldown
     {
         get { return atkCooldown; }
