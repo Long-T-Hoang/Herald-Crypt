@@ -51,7 +51,7 @@ public class Weapons : MonoBehaviour
         }
     }
 
-    public int Ammo(){
+    public int Durability(){
         if(usedCount <= 0)
         {
             return 0;
