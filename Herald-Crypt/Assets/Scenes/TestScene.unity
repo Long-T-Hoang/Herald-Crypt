@@ -271,8 +271,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -322, y: 127}
-  m_SizeDelta: {x: 200, y: 33}
+  m_AnchoredPosition: {x: -283.73, y: 127}
+  m_SizeDelta: {x: 276.54297, y: 33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &350094909
 MonoBehaviour:
@@ -2255,6 +2255,10 @@ PrefabInstance:
       propertyPath: scoreUI
       value: 
       objectReference: {fileID: 1272646176}
+    - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
+      propertyPath: texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 1e3a7ed33da99604f876796bcdf9e2f8, type: 3}
     - target: {fileID: 1986246749, guid: 62bbe66ca385fdd47ae51f42b202c345, type: 3}
       propertyPath: healthUI
       value: 
