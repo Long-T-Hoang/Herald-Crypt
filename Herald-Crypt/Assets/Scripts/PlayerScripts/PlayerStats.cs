@@ -53,7 +53,7 @@ public class PlayerStats : MonoBehaviour
         healthTxt.text = "Health: " + health;
         //moneyTxt.text = "Money: " + money;
 
-        ShowAmmo();
+        ShowDurability();
     }
 
     public void Damaged(int dmg)
@@ -77,15 +77,19 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    private void ShowAmmo(){
+    private void ShowHearts(){
+        
+    }
+
+    private void ShowDurability(){
         if(playerAtt.GetCurrentWeapon() == null){
             return;
         }
 
         currentWeap = playerAtt.GetCurrentWeapon();
-        ammoTxt.text = "Ammo: " + currentWeap.Ammo();
+        ammoTxt.text = "Weapon Durability: " + currentWeap.Durability();
 
-        if(currentWeap.Ammo() <= 0)
+        if(currentWeap.Durability() <= 0)
         {
             ammoTxt.text = "";
         }
