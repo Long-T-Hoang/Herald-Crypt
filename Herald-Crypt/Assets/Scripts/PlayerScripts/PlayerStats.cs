@@ -14,8 +14,8 @@ public class PlayerStats : MonoBehaviour
     public GameObject moneyUI;
     public GameObject ammoUI;
 
-    private List<GameObject> heartObjs;
-    public Texture2D heartTex;
+    [SerializeField]
+    private GameObject[] hearts;
 
     private Text scoreTxt;
     private Text moneyTxt;
@@ -43,8 +43,6 @@ public class PlayerStats : MonoBehaviour
 
         anim = GetComponentInChildren<PlayerAnimation>();
         playerAtt = GetComponentInChildren<PlayerAttack>();
-
-        ShowHearts(health);
     }
 
     // Update is called once per frame
@@ -54,6 +52,7 @@ public class PlayerStats : MonoBehaviour
         //moneyTxt.text = "Money: " + money;
 
         ShowDurability();
+        ShowHearts(health);
     }
 
     public void Damaged(int dmg)
@@ -66,8 +65,6 @@ public class PlayerStats : MonoBehaviour
         {
             levelManager.GetComponent<LevelManager>().loadGameOverScreen();
         }
-        ClearHearts();
-        ShowHearts(health);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -80,32 +77,14 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void ShowHearts(int hp){
-        heartObjs = new List<GameObject>();
-
-        for(int i=0; i < hp; i++){
-            heartObjs.Add(new GameObject("Heart"));
-        }
-
-        float heartX = 20f;
-        float heartY = 510f;
-        float heartGap = 35f;
-
-        for(int i=0; i < heartObjs.Count; i++){
-            heartObjs[i].transform.SetParent(healthUI.transform);
-            heartObjs[i].transform.localScale = new Vector3(0.3f, 0.3f, 1f);
-            heartObjs[i].transform.position = new Vector3(heartX, heartY, 1f);
-
-            Image heartImg = heartObjs[i].AddComponent<Image>();
-            Sprite heartSpr = Sprite.Create(heartTex, new Rect(0f, 0f, heartTex.width, heartTex.height), new Vector2(0f, 0f));
-            heartImg.sprite = heartSpr;
-
-            heartX += heartGap;
-        }
-    }
-
-    private void ClearHearts(){
-        for(int i=0; i < heartObjs.Count; i++){
-            Destroy(heartObjs[i]);
+        for(int i=0; i < hearts.Length; i++){
+            if(i < hp){
+                hearts[i].SetActive(true);
+            }
+            else
+            {
+                hearts[i].SetActive(false);
+            }
         }
     }
 
