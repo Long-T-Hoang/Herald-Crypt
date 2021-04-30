@@ -49,7 +49,7 @@ public class Grid<GridObject>
             }
         }
 
-        //ShowDebug();
+        ShowDebug();
     }
 
     public Vector3 CellToWorldPos(int x, int y)

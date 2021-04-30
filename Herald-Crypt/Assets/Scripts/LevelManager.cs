@@ -41,7 +41,8 @@ public class LevelManager : MonoBehaviour
         roomManagerScript.CreateStringGrid();
 
         //roomStat.CalculateStat();
-        pathfinding = new Pathfinding(roomManagerScript.roomWidth * ROOM_WIDTH_IN_TILE, roomManagerScript.roomHeight * ROOM_WIDTH_IN_TILE, 0.5f, roomManagerScript.lowest);
+        Vector3 lowest = roomManagerScript.lowest - roomManagerScript.tileSize * 10;
+        pathfinding = new Pathfinding(roomManagerScript.roomWidth * ROOM_WIDTH_IN_TILE, roomManagerScript.roomHeight * ROOM_WIDTH_IN_TILE, 0.5f, lowest);
 
         List<GameObject> rooms = roomManagerScript.roomList;
 

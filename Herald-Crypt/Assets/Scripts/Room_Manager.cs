@@ -14,7 +14,8 @@ public class Room_Manager : MonoBehaviour {
     public GameObject startRoom;
     public GameObject centerRoom;
 
-    private Vector2 roomSize = new Vector2(5.5f, 5.5f);
+    public Vector2 tileSize;// = new Vector2(0.5f, 0.5f);
+    public Vector2 roomSize;// = new Vector2(5.5f, 5.5f);
 
     public GameObject player;
     private string[,] stringGrid;
@@ -32,6 +33,10 @@ public class Room_Manager : MonoBehaviour {
         //CreateStringGrid();
 
         roomList = new List<GameObject>();
+
+        // Initialize roomSize based on tileSize
+        tileSize = new Vector2(0.5f, 0.5f);
+        roomSize = tileSize * 11;
     }
 
     public void CreateStringGrid() {
