@@ -3980,6 +3980,26 @@ PrefabInstance:
       propertyPath: speed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4197267764797458288, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: dodgeTime
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267764797458288, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: dodgeCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267764797458288, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: dodgeDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4197267764797458288, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: dodgeModifier
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4197267764797458291, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: m_RootOrder

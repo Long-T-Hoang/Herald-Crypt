@@ -29,6 +29,9 @@ public class LevelManager : MonoBehaviour
 
         // Always put in bottom
         Spawn();
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
     }
 
     // Update is called once per frame
