@@ -15,19 +15,26 @@ public class Room_Manager : MonoBehaviour {
     public GameObject startRoom;
     public GameObject centerRoom;
 
+    [HideInInspector]
     public Vector2 tileSize;// = new Vector2(0.5f, 0.5f);
+    [HideInInspector]
     public Vector2 roomSize;// = new Vector2(5.5f, 5.5f);
 
     public GameObject player;
     private string[,] stringGrid;
     private GameObject[,] roomGrid;
 
+    [HideInInspector]
     public int roomWidth;
+    [HideInInspector]
     public int roomHeight;
 
     // Stats for generating grids for pathfinding
+    [HideInInspector]
     public Vector2 lowest = new Vector2(999, 999);
+    [HideInInspector]
     public Vector2 highest = new Vector2 (-999, -999);
+    [HideInInspector]
     public List<GameObject> roomList;
 
     void Start() {

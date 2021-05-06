@@ -2212,6 +2212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ringAmount: 0
+  roomAmount: 10
   capRooms:
   - {fileID: 8009318592708772475, guid: 15de4bb0784432f46a50d78fd86175b3, type: 3}
   - {fileID: 3098290605038994176, guid: 3d4b32d17d311204c894c882c6241517, type: 3}
