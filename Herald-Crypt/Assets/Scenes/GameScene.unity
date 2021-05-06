@@ -1492,6 +1492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838e6fdfa25ea434388d52abec036320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 2044356314}
   enemyPref:
   - {fileID: 2784464211121367105, guid: dcf8b8e395ab1574b85d49461ece6ee6, type: 3}
   - {fileID: 2784464211121367105, guid: bb9de81f090d0e54dafb85f7a0302757, type: 3}
@@ -3954,6 +3955,11 @@ PrefabInstance:
       propertyPath: inventoryUI
       value: 
       objectReference: {fileID: 1170389104}
+    - target: {fileID: 4197267764797458191, guid: 62bbe66ca385fdd47ae51f42b202c345,
+        type: 3}
+      propertyPath: levelManager
+      value: 
+      objectReference: {fileID: 964207064}
     - target: {fileID: 4197267764797458191, guid: 62bbe66ca385fdd47ae51f42b202c345,
         type: 3}
       propertyPath: defaultWeapon

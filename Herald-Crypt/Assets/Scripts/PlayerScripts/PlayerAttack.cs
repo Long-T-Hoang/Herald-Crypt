@@ -18,6 +18,8 @@ public class PlayerAttack : MonoBehaviour
     private Weapons currentWepScript;
     public int currentWepIndex;
     private const int WEAPON_COUNT = 3;
+
+    // Events
     private UnityEvent invUpdateEvent;
     private UnityEvent switchWepEvent;
 
@@ -36,9 +38,25 @@ public class PlayerAttack : MonoBehaviour
 
     private void Awake()
     {
+        LevelManager lm = GetComponent<PlayerStats>().levelManager.GetComponent<LevelManager>();
+
         // Set default weapon
         inventory = new List<GameObject>();
-        inventory.Add(Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity));
+        //inventory.Add(Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity));
+
+        // Load stat from PlayerSaveStats
+        for(int i = 0; i < PlayerSaveStats.Inventory.Length; i++)
+        {
+            for (int j = 0; j < lm.weaponPref.Length; j++)
+            {
+                if (lm.weaponPref[j].name == PlayerSaveStats.Inventory[i])
+                {
+                    GameObject wep = Instantiate(lm.weaponPref[j], new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity);
+                    wep.GetComponent<Weapons>().UsedCount = PlayerSaveStats.InvAmmo[i];
+                    inventory.Add(wep);
+                }
+            }
+        }
     }
 
     // Start is called before the first frame update

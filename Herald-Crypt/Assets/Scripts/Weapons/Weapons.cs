@@ -26,6 +26,15 @@ public class Weapons : MonoBehaviour
         get { return atkCooldown; }
     }    
 
+    public int UsedCount
+    {
+        get { return usedCount; }
+        set
+        {
+            if (value > 0) usedCount = value;
+        }
+    }
+
     // Constructor
     public Weapons()
     {

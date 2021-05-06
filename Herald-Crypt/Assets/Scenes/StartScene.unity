@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &249055825
 RectTransform:
   m_ObjectHideFlags: 0
@@ -899,8 +899,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17, y: 23}
-  m_SizeDelta: {x: 338, y: 246.7}
+  m_AnchoredPosition: {x: 0, y: 26.3}
+  m_SizeDelta: {x: 282.34, y: 246.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1936936053
 MonoBehaviour:
@@ -923,14 +923,17 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'WASD for movement
 
-    E to pick up weapons
+    Left Shift while moving to dodge
+
+    E to pick
+    up weapons
 
     Left mouse click to attack
 
-    Mouse
-    scroll to switch weapon
+    Mouse scroll to switch weapon
 
-    Kill all enemies to win'
+    Kill
+    all enemies to win'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 08b6fe67737d5e445a796baa876db2c6, type: 2}
   m_sharedMaterial: {fileID: 1197870534471954669, guid: 08b6fe67737d5e445a796baa876db2c6,
@@ -1174,7 +1177,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -124}
+  m_AnchoredPosition: {x: 0, y: -132.9}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1966353602
@@ -1295,7 +1298,7 @@ RectTransform:
   m_GameObject: {fileID: 2002764602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.47, y: 3.23, z: 1}
+  m_LocalScale: {x: 4.47, y: 3.5, z: 1}
   m_Children: []
   m_Father: {fileID: 249055825}
   m_RootOrder: 0

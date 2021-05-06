@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
+    public GameObject player;
     public GameObject[] enemyPref;
     public GameObject[] weaponPref;
     private GameObject roomManager;
@@ -73,7 +74,7 @@ public class LevelManager : MonoBehaviour
 
         if (spawned && enemies.Count == 0)
         {
-            loadWinScreen();
+            loadNextLevel();
         }
     }
 
@@ -98,11 +99,12 @@ public class LevelManager : MonoBehaviour
                 float x = Random.Range(-1.75f, 1.75f);
                 float y = Random.Range(-1.75f, 1.75f);
                 int randInt = Random.Range(0, prefabList.Length);
+                Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f));
 
                 Vector3 position = rooms[i].transform.position + new Vector3(x, y, 0.0f);
 
-                GameObject instance = Instantiate(prefabList[randInt], position, Quaternion.identity, this.transform);
-                
+                GameObject instance = Instantiate(prefabList[randInt], position, rotation, this.transform);
+                instance.name = prefabList[randInt].name;
                 objectList.Add(instance);
             }
         }
@@ -113,6 +115,29 @@ public class LevelManager : MonoBehaviour
     public void loadWinScreen()
     {
         SceneManager.LoadScene(2);
+    }
+
+    public void loadNextLevel()
+    {
+        // Save data for next level
+        PlayerSaveStats.Health = player.GetComponent<PlayerStats>().Health;
+        List<GameObject> inventory = player.GetComponent<PlayerAttack>().Inventory;
+
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i] != null)
+            {
+                PlayerSaveStats.Inventory[i] = inventory[i].name;
+                PlayerSaveStats.InvAmmo[i] = inventory[i].GetComponent<Weapons>().UsedCount;
+            }
+            else
+            {
+                PlayerSaveStats.Inventory[i] = "";
+                PlayerSaveStats.InvAmmo[i] = 0;
+            }
+        }
+
+        SceneManager.LoadScene(3);
     }
 
     public void loadGameOverScreen()

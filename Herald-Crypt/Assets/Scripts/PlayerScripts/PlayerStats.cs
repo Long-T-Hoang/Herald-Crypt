@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerStats : MonoBehaviour
-{
-    [SerializeField]
-    private GameObject levelManager;
+{ 
+    public GameObject levelManager;
     private PlayerAnimation anim;
 
     public GameObject scoreUI;
@@ -21,22 +20,22 @@ public class PlayerStats : MonoBehaviour
     private Text moneyTxt;
     private Text ammoTxt;
 
-    int health;
-    int ammo;
+    private int health;
+    private int ammo;
 
     private PlayerAttack playerAtt;
     private Weapons currentWeap;
 
+    public int Health
+    {
+        get { return health; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        //score = 0;
-        health = 10;
-        //money = 0;
-
-        // Already is a Text component
-        //scoreTxt = GetComponent<Text>();
-        //moneyTxt = GetComponent<Text>();
+        // Load stat from PlayerSaveStats
+        health = PlayerSaveStats.Health;
 
         ammoTxt = ammoUI.GetComponent<Text>();
         ammoTxt.text = "";
