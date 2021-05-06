@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Room_Manager : MonoBehaviour {
     public int ringAmount;
+    public int roomAmount;
 
     public List<GameObject> capRooms;       //0-TC, 1-BC, 2-LC, 3-RC
     public List<GameObject> cornerRooms;    //0-TL, 1-TR, 2-BL, 3-BR
@@ -49,6 +50,11 @@ public class Room_Manager : MonoBehaviour {
             ringAmount++;
         }
 
+        //  Part - Create Room Amount (> 7)
+        if (roomAmount < 7){
+            roomAmount = 7;
+        }
+
         stringGrid = new string[2 * ringAmount + 1, 2 * ringAmount + 1];
         int midpoint = stringGrid.GetLength(0) / 2;
 
@@ -61,83 +67,81 @@ public class Room_Manager : MonoBehaviour {
 
         //  Part - Create String Grid
         for (int i = 0; i < ringAmount; i++) {
-            Debug.Log("Ring : " + i);
+            if (roomAmount > 0) {
+                //  Part - Starting 3x3
+                if (i == 0) {
+                    stringGrid[midpoint, midpoint] = "r";
 
-            //  Part - Starting 3x3
-            if (i == 0) {
-                stringGrid[midpoint, midpoint] = "r";
+                    stringGrid[midpoint - 1, midpoint] = "r";
+                    stringGrid[midpoint + 1, midpoint] = "r";
+                    stringGrid[midpoint, midpoint - 1] = "r";
+                    stringGrid[midpoint, midpoint + 1] = "r";
 
-                stringGrid[midpoint - 1, midpoint] = "r";
-                stringGrid[midpoint + 1, midpoint] = "r";
-                stringGrid[midpoint, midpoint - 1] = "r";
-                stringGrid[midpoint, midpoint + 1] = "r";
+                    int rand1 = Random.Range(1, 2);
+                    if (rand1 == 1) {
+                        stringGrid[midpoint - 1, midpoint - 1] = "r";
+                        stringGrid[midpoint + 1, midpoint + 1] = "r";
+                    }
+                    else if (rand1 == 2) {
+                        stringGrid[midpoint + 1, midpoint - 1] = "r";
+                        stringGrid[midpoint - 1, midpoint + 1] = "r";
+                    }
 
-                int rand1 = 1;//Random.Range(1, 2);
-                if (rand1 == 1) {
-                    stringGrid[midpoint - 1, midpoint - 1] = "r";
-                    stringGrid[midpoint + 1, midpoint + 1] = "r";
-                    //stringGrid[midpoint + 1, midpoint - 1] = "-";
-                    //stringGrid[midpoint - 1, midpoint + 1] = "-";
+                    roomAmount -= 7;
                 }
-                else if (rand1 == 2) {
-                    //stringGrid[midpoint - 1, midpoint - 1] = "-";
-                    //stringGrid[midpoint + 1, midpoint + 1] = "-";
-                    stringGrid[midpoint + 1, midpoint - 1] = "r";
-                    stringGrid[midpoint - 1, midpoint + 1] = "r";
-                }
-            }
 
-            else {
-                for (int y = -i; y <= i; y++) {
-                    for (int x = -i; x <= i; x++) {
+                else {
+                    for (int y = -i; y <= i; y++) {
+                        for (int x = -i; x <= i; x++) {
 
-                        if (stringGrid[midpoint + x, midpoint + y] == "r") {
-                            //  Part - Top Row
-                            if (y == -i) {
-                                //  Part - TL Corner
-                                if (x == -i) {
-                                    CS_Corner(1, new Vector2(midpoint + x, midpoint + y));
+                            if (stringGrid[midpoint + x, midpoint + y] == "r") {
+                                //  Part - Top Row
+                                if (y == -i) {
+                                    //  Part - TL Corner
+                                    if (x == -i) {
+                                        CS_Corner(1, new Vector2(midpoint + x, midpoint + y));
+                                    }
+
+                                    //  Part - T Edge
+                                    else if (x > -i && x < i) {
+                                        CS_CEdge(1, new Vector2(midpoint + x, midpoint + y));
+                                    }
+
+                                    //  Part - TR Corner
+                                    else if (x == i) {
+                                        CS_Corner(2, new Vector2(midpoint + x, midpoint + y));
+                                    }
                                 }
 
-                                //  Part - T Edge
-                                else if (x > -i && x < i) {
-                                    CS_CEdge(1, new Vector2(midpoint + x, midpoint + y));
+                                //  Part - Middle Row
+                                else if (y > -i && y < i) {
+                                    //  Part - L Edge
+                                    if (x == -i) {
+                                        CS_CEdge(3, new Vector2(midpoint + x, midpoint + y));
+                                    }
+
+                                    //  Part - R Edge
+                                    else if (x == i) {
+                                        CS_CEdge(4, new Vector2(midpoint + x, midpoint + y));
+                                    }
                                 }
 
-                                //  Part - TR Corner
-                                else if (x == i) {
-                                    CS_Corner(2, new Vector2(midpoint + x, midpoint + y));
-                                }
-                            }
+                                //  Part - Bottom Row
+                                else if (y == i) {
+                                    //  Part - BL Corner
+                                    if (x == -i) {
+                                        CS_Corner(3, new Vector2(midpoint + x, midpoint + y));
+                                    }
 
-                            //  Part - Middle Row
-                            else if (y > -i && y < i) {
-                                //  Part - L Edge
-                                if (x == -i) {
-                                    CS_CEdge(3, new Vector2(midpoint + x, midpoint + y));
-                                }
+                                    //  Part - B Edge
+                                    else if (x > -i && x < i) {
+                                        CS_CEdge(2, new Vector2(midpoint + x, midpoint + y));
+                                    }
 
-                                //  Part - R Edge
-                                else if (x == i) {
-                                    CS_CEdge(4, new Vector2(midpoint + x, midpoint + y));
-                                }
-                            }
-
-                            //  Part - Bottom Row
-                            else if (y == i) {
-                                //  Part - BL Corner
-                                if (x == -i) {
-                                    CS_Corner(3, new Vector2(midpoint + x, midpoint + y));
-                                }
-
-                                //  Part - B Edge
-                                else if (x > -i && x < i) {
-                                    CS_CEdge(2, new Vector2(midpoint + x, midpoint + y));
-                                }
-
-                                //  Part - BR Corner
-                                else if (x == i) {
-                                    CS_Corner(4, new Vector2(midpoint + x, midpoint + y));
+                                    //  Part - BR Corner
+                                    else if (x == i) {
+                                        CS_Corner(4, new Vector2(midpoint + x, midpoint + y));
+                                    }
                                 }
                             }
                         }
@@ -153,47 +157,47 @@ public class Room_Manager : MonoBehaviour {
     }
 
     private void CS_Corner(int pType, Vector2 pIndex) {
-        int rand = Random.Range(1, 4);
+        int rand = 0;
+
+        if (roomAmount >= 2) {
+            rand = Random.Range(1, 4);
+        }
+
+        else if (roomAmount == 1) {
+            rand = Random.Range(1, 2);
+        }
 
         int pX = (int)pIndex.x;
         int pY = (int)pIndex.y;
-
-        //Debug.Log(stringGrid.GetLength(0) + ", " + stringGrid.GetLength(1) + " : " + pIndex.x + ", " + pIndex.y);
 
         switch(pType) {
             //  Part - TL Corner
             case 1:
                 switch(rand) {
                     case 1:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
-                        //stringGrid[pX, pY - 1]       = "-";
-
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 2:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
                         stringGrid[pX, pY - 1]       = "r";
-
-                        //stringGrid[pX - 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 3:
                         stringGrid[pX - 1, pY - 1]   = "r";
-                        //stringGrid[pX, pY - 1]       = "-";
-
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
 
                     case 4:
                         stringGrid[pX - 1, pY - 1]   = "r";
                         stringGrid[pX, pY - 1]       = "r";
-
-                        //stringGrid[pX - 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                 }
                 break;
@@ -202,35 +206,29 @@ public class Room_Manager : MonoBehaviour {
             case 2:
                 switch(rand) {
                     case 1:
-                        //stringGrid[pX + 1, pY - 1]   = "-";
-                        //stringGrid[pX, pY - 1]       = "-";
-
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 2:
-                        //stringGrid[pX + 1, pY - 1]   = "-";
                         stringGrid[pX, pY - 1]       = "r";
-
-                        //stringGrid[pX + 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 3:
                         stringGrid[pX + 1, pY - 1]   = "r";
-                        //stringGrid[pX, pY - 1]       = "-";
-
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
 
                     case 4:
                         stringGrid[pX + 1, pY - 1]   = "r";
                         stringGrid[pX, pY - 1]       = "r";
-
-                        //stringGrid[pX + 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                 }
                 break;
@@ -239,35 +237,29 @@ public class Room_Manager : MonoBehaviour {
             case 3:
                 switch(rand) {
                     case 1:
-                        //stringGrid[pX - 1, pY + 1]   = "-";
-                        //stringGrid[pX, pY + 1]       = "-";
-
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 2:
-                        //stringGrid[pX - 1, pY + 1]   = "-";
                         stringGrid[pX, pY + 1]       = "r";
-
-                        //stringGrid[pX - 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 3:
                         stringGrid[pX - 1, pY + 1]   = "r";
-                        //stringGrid[pX, pY + 1]       = "-";
-
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
 
                     case 4:
                         stringGrid[pX - 1, pY + 1]   = "r";
                         stringGrid[pX, pY + 1]       = "r";
-
-                        //stringGrid[pX - 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                 }
                 break;
@@ -276,35 +268,29 @@ public class Room_Manager : MonoBehaviour {
             case 4:
                 switch(rand) {
                     case 1:
-                        //stringGrid[pX + 1, pY + 1]   = "-";
-                        //stringGrid[pX, pY + 1]       = "-";
-
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 2:
-                        //stringGrid[pX + 1, pY + 1]   = "-";
                         stringGrid[pX, pY + 1]       = "r";
-
-                        //stringGrid[pX + 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
 
                     case 3:
                         stringGrid[pX + 1, pY + 1]   = "r";
-                        //stringGrid[pX, pY + 1]       = "-";
-
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
 
                     case 4:
                         stringGrid[pX + 1, pY + 1]   = "r";
                         stringGrid[pX, pY + 1]       = "r";
-
-                        //stringGrid[pX + 1, pY]       = "-";
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                 }
                 break;
@@ -312,7 +298,19 @@ public class Room_Manager : MonoBehaviour {
     }
 
     private void CS_CEdge(int pType, Vector2 pIndex) {
-        int rand = Random.Range(1, 4);
+        int rand = 0;
+
+        if (roomAmount >= 3) {
+            rand = Random.Range(1, 4);
+        }
+
+        else if (roomAmount == 2) {
+            rand = Random.Range(1, 3);
+        }
+
+        else if (roomAmount == 1) {
+            rand = 1;
+        }
 
         int pX = (int)pIndex.x;
         int pY = (int)pIndex.y;
@@ -322,32 +320,28 @@ public class Room_Manager : MonoBehaviour {
             case 1:
                 switch (rand) {
                     case 1:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
                         stringGrid[pX, pY - 1]       = "r";
-                        //stringGrid[pX + 1, pY - 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
                     case 2:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
                         stringGrid[pX, pY - 1]       = "r";
                         stringGrid[pX + 1, pY - 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 3:
                         stringGrid[pX - 1, pY - 1]   = "r";
                         stringGrid[pX, pY - 1]       = "r";
-                        //stringGrid[pX + 1, pY - 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 4:
                         stringGrid[pX - 1, pY - 1]   = "r";
                         stringGrid[pX, pY - 1]       = "r";
                         stringGrid[pX + 1, pY - 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 3;
                         break;
                 }
                 break;
@@ -356,32 +350,28 @@ public class Room_Manager : MonoBehaviour {
             case 2:
                 switch (rand) {
                     case 1:
-                        //stringGrid[pX - 1, pY + 1]   = "-";
                         stringGrid[pX, pY + 1]       = "r";
-                        //stringGrid[pX + 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
                     case 2:
-                        //stringGrid[pX - 1, pY + 1]   = "-";
                         stringGrid[pX, pY + 1]       = "r";
                         stringGrid[pX + 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 3:
                         stringGrid[pX - 1, pY + 1]   = "r";
                         stringGrid[pX, pY + 1]       = "r";
-                        //stringGrid[pX + 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 4:
                         stringGrid[pX - 1, pY + 1]   = "r";
                         stringGrid[pX, pY + 1]       = "r";
                         stringGrid[pX + 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 3;
                         break;
                 }
                 break;
@@ -390,32 +380,28 @@ public class Room_Manager : MonoBehaviour {
             case 3:
                 switch (rand) {
                     case 1:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
                         stringGrid[pX - 1, pY]       = "r";
-                        //stringGrid[pX - 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
                     case 2:
                         stringGrid[pX - 1, pY - 1]   = "r";
                         stringGrid[pX - 1, pY]       = "r";
-                        //stringGrid[pX - 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 3:
-                        //stringGrid[pX - 1, pY - 1]   = "-";
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX - 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 4:
                         stringGrid[pX - 1, pY - 1]   = "r";
                         stringGrid[pX - 1, pY]       = "r";
                         stringGrid[pX - 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 3;
                         break;
                 }
                 break;
@@ -424,32 +410,28 @@ public class Room_Manager : MonoBehaviour {
             case 4:
                 switch (rand) {
                     case 1:
-                        //stringGrid[pX + 1, pY - 1]   = "-";
                         stringGrid[pX + 1, pY]       = "r";
-                        //stringGrid[pX + 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 1;
                         break;
                     case 2:
                         stringGrid[pX + 1, pY - 1]   = "r";
                         stringGrid[pX + 1, pY]       = "r";
-                        //stringGrid[pX + 1, pY + 1]   = "-";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 3:
-                        //stringGrid[pX + 1, pY - 1]   = "-";
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX + 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 2;
                         break;
                     case 4:
                         stringGrid[pX + 1, pY - 1]   = "r";
                         stringGrid[pX + 1, pY]       = "r";
                         stringGrid[pX + 1, pY + 1]   = "r";
-
                         stringGrid[pX, pY]           = "r";
+                        roomAmount -= 3;
                         break;
                 }
                 break;

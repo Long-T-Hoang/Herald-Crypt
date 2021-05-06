@@ -1388,6 +1388,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 838e6fdfa25ea434388d52abec036320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   enemyPref:
   - {fileID: 2784464211121367105, guid: dcf8b8e395ab1574b85d49461ece6ee6, type: 3}
   - {fileID: 2784464211121367105, guid: bb9de81f090d0e54dafb85f7a0302757, type: 3}
@@ -2119,6 +2120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ringAmount: 0
+  roomAmount: 25
   capRooms:
   - {fileID: 8009318592708772475, guid: 15de4bb0784432f46a50d78fd86175b3, type: 3}
   - {fileID: 3098290605038994176, guid: 3d4b32d17d311204c894c882c6241517, type: 3}
@@ -2146,6 +2148,8 @@ MonoBehaviour:
     type: 3}
   centerRoom: {fileID: 2932120991115121687, guid: 53b4aa0c5feed9f499f86dda0cbbda34,
     type: 3}
+  tileSize: {x: 0, y: 0}
+  roomSize: {x: 0, y: 0}
   player: {fileID: 2044356314}
   roomWidth: 0
   roomHeight: 0
