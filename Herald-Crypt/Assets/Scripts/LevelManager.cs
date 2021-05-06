@@ -33,6 +33,12 @@ public class LevelManager : MonoBehaviour
 
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
+
+        // Debug for room number generation
+        //for(; PlayerSaveStats.Level <= 10; PlayerSaveStats.Level++)
+        //{
+        //    Debug.Log("level:" + PlayerSaveStats.Level + "roomNum:" + PlayerSaveStats.CalculateRoomNum());
+        //}
     }
 
     // Update is called once per frame
@@ -50,7 +56,7 @@ public class LevelManager : MonoBehaviour
 
         List<GameObject> rooms = roomManagerScript.roomList;
 
-        enemies = SpawnObjects(rooms, enemyPref, 0, 3);
+        enemies = SpawnObjects(rooms, enemyPref, 0, 3, 1);
         weapons = SpawnObjects(rooms, weaponPref, 0, 3);
 
         // Assign pathfinding to enemies
@@ -86,18 +92,19 @@ public class LevelManager : MonoBehaviour
     /// <param name="objectList">Object list to store spawned objects</param>
     /// <param name="min">minimum number of object spawn in a room</param>
     /// <param name="max">maximum number of object spawn in a room</param>
-    private List<GameObject> SpawnObjects(List<GameObject> rooms, GameObject[] prefabList, int min, int max)
+    private List<GameObject> SpawnObjects(List<GameObject> rooms, GameObject[] prefabList, int min, int max, int startRoomIndex = 0)
     {
         List<GameObject> objectList = new List<GameObject>();
 
-        for (int i = 0; i < rooms.Count; i++)
+        for (int i = startRoomIndex; i < rooms.Count; i++)
         {
             int objectCount = Random.Range(min, max);
 
             for (int j = 0; j < objectCount; j++)
             {
-                float x = Random.Range(-1.75f, 1.75f);
-                float y = Random.Range(-1.75f, 1.75f);
+                float roomHalfSize = (roomManagerScript.roomSize.x / 2) - 0.75f;
+                float x = Random.Range(-roomHalfSize, roomHalfSize);
+                float y = Random.Range(-roomHalfSize, roomHalfSize);
                 int randInt = Random.Range(0, prefabList.Length);
                 Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f));
 
@@ -106,6 +113,11 @@ public class LevelManager : MonoBehaviour
                 GameObject instance = Instantiate(prefabList[randInt], position, rotation, this.transform);
                 instance.name = prefabList[randInt].name;
                 objectList.Add(instance);
+
+                if(Vector2.Distance(position, rooms[0].transform.position) < roomManagerScript.roomSize.x / 2)
+                {
+                    Debug.Log("room index:" + i + " name:" + instance.name + " (x,y):" + x + " " + y);
+                }
             }
         }
 
@@ -120,6 +132,13 @@ public class LevelManager : MonoBehaviour
     public void loadNextLevel()
     {
         // Save data for next level
+        if(PlayerSaveStats.Level >= 10)
+        {
+            loadWinScreen();
+            return;
+        }
+
+        PlayerSaveStats.Level++;
         PlayerSaveStats.Health = player.GetComponent<PlayerStats>().Health;
         List<GameObject> inventory = player.GetComponent<PlayerAttack>().Inventory;
 

@@ -39,12 +39,14 @@ public class Room_Manager : MonoBehaviour {
 
     void Start() {
         //CreateStringGrid();
-
         roomList = new List<GameObject>();
 
         // Initialize roomSize based on tileSize
         tileSize = new Vector2(0.5f, 0.5f);
         roomSize = tileSize * 11;
+
+        // Set room amount at start of each level
+        roomAmount = PlayerSaveStats.CalculateRoomNum();
     }
 
     public void CreateStringGrid() {
@@ -77,7 +79,7 @@ public class Room_Manager : MonoBehaviour {
             if (roomAmount > 0) {
                 //  Part - Starting 3x3
                 if (i == 0) {
-                    stringGrid[midpoint, midpoint] = "r";
+                    //stringGrid[midpoint, midpoint] = "r";
 
                     stringGrid[midpoint - 1, midpoint] = "r";
                     stringGrid[midpoint + 1, midpoint] = "r";
@@ -94,7 +96,7 @@ public class Room_Manager : MonoBehaviour {
                         stringGrid[midpoint - 1, midpoint + 1] = "r";
                     }
 
-                    roomAmount -= 7;
+                    roomAmount -= 6;
                 }
 
                 else {

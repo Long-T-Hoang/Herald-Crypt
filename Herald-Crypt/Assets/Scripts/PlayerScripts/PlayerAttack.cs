@@ -40,9 +40,7 @@ public class PlayerAttack : MonoBehaviour
     {
         LevelManager lm = GetComponent<PlayerStats>().levelManager.GetComponent<LevelManager>();
 
-        // Set default weapon
         inventory = new List<GameObject>();
-        //inventory.Add(Instantiate(defaultWeapon, new Vector3(transform.position.x, transform.position.y, -10), Quaternion.identity));
 
         // Load stat from PlayerSaveStats
         for(int i = 0; i < PlayerSaveStats.Inventory.Length; i++)
