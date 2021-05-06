@@ -2119,7 +2119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272f9da77f9b4ae4987161c99c6a9d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ringAmount: 0
+  ringAmount: 9
   roomAmount: 25
   capRooms:
   - {fileID: 8009318592708772475, guid: 15de4bb0784432f46a50d78fd86175b3, type: 3}
