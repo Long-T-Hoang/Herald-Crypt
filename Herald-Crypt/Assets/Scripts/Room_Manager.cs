@@ -77,7 +77,7 @@ public class Room_Manager : MonoBehaviour {
                     stringGrid[midpoint, midpoint - 1] = "r";
                     stringGrid[midpoint, midpoint + 1] = "r";
 
-                    int rand1 = Random.Range(1, 2);
+                    int rand1 = Random.Range(1, 3);
                     if (rand1 == 1) {
                         stringGrid[midpoint - 1, midpoint - 1] = "r";
                         stringGrid[midpoint + 1, midpoint + 1] = "r";
@@ -160,11 +160,11 @@ public class Room_Manager : MonoBehaviour {
         int rand = 0;
 
         if (roomAmount >= 2) {
-            rand = Random.Range(1, 4);
+            rand = Random.Range(1, 5);
         }
 
         else if (roomAmount == 1) {
-            rand = Random.Range(1, 2);
+            rand = Random.Range(1, 3);
         }
 
         int pX = (int)pIndex.x;
@@ -301,11 +301,11 @@ public class Room_Manager : MonoBehaviour {
         int rand = 0;
 
         if (roomAmount >= 3) {
-            rand = Random.Range(1, 4);
+            rand = Random.Range(1, 5);
         }
 
         else if (roomAmount == 2) {
-            rand = Random.Range(1, 3);
+            rand = Random.Range(1, 4);
         }
 
         else if (roomAmount == 1) {
