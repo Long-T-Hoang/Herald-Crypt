@@ -56,7 +56,7 @@ public class LevelManager : MonoBehaviour
 
         List<GameObject> rooms = roomManagerScript.roomList;
 
-        enemies = SpawnObjects(rooms, enemyPref, 0, 3, 1);
+        enemies = SpawnObjects(rooms, enemyPref, 0, 3, false);
         weapons = SpawnObjects(rooms, weaponPref, 0, 3);
 
         // Assign pathfinding to enemies
@@ -92,11 +92,11 @@ public class LevelManager : MonoBehaviour
     /// <param name="objectList">Object list to store spawned objects</param>
     /// <param name="min">minimum number of object spawn in a room</param>
     /// <param name="max">maximum number of object spawn in a room</param>
-    private List<GameObject> SpawnObjects(List<GameObject> rooms, GameObject[] prefabList, int min, int max, int startRoomIndex = 0)
+    private List<GameObject> SpawnObjects(List<GameObject> rooms, GameObject[] prefabList, int min, int max, bool spawnInStart = true)
     {
         List<GameObject> objectList = new List<GameObject>();
 
-        for (int i = startRoomIndex; i < rooms.Count; i++)
+        for (int i = 0; i < rooms.Count; i++)
         {
             int objectCount = Random.Range(min, max);
 
@@ -110,14 +110,16 @@ public class LevelManager : MonoBehaviour
 
                 Vector3 position = rooms[i].transform.position + new Vector3(x, y, 0.0f);
 
+                if (Vector2.Distance(position, rooms[0].transform.position) < roomManagerScript.roomSize.x / 2 && spawnInStart == false)
+                {
+                    //Debug.Log("room index:" + i + " name:" + instance.name + " (x,y):" + x + " " + y);
+                    break;
+                }
+
                 GameObject instance = Instantiate(prefabList[randInt], position, rotation, this.transform);
                 instance.name = prefabList[randInt].name;
                 objectList.Add(instance);
 
-                if(Vector2.Distance(position, rooms[0].transform.position) < roomManagerScript.roomSize.x / 2)
-                {
-                    Debug.Log("room index:" + i + " name:" + instance.name + " (x,y):" + x + " " + y);
-                }
             }
         }
 

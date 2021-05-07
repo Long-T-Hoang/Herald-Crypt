@@ -79,7 +79,7 @@ public class Room_Manager : MonoBehaviour {
             if (roomAmount > 0) {
                 //  Part - Starting 3x3
                 if (i == 0) {
-                    //stringGrid[midpoint, midpoint] = "r";
+                    stringGrid[midpoint, midpoint] = "r";
 
                     stringGrid[midpoint - 1, midpoint] = "r";
                     stringGrid[midpoint + 1, midpoint] = "r";
@@ -96,7 +96,7 @@ public class Room_Manager : MonoBehaviour {
                         stringGrid[midpoint - 1, midpoint + 1] = "r";
                     }
 
-                    roomAmount -= 6;
+                    roomAmount -= 7;
                 }
 
                 else {
