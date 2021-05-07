@@ -23,7 +23,7 @@ public class ButtonFunctions : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("TestScene");
+        SceneManager.LoadScene("GameScene");
     }
 
     public void OpenInstruction()
