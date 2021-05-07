@@ -8,17 +8,17 @@ public class PlayerStats : MonoBehaviour
     public GameObject levelManager;
     private PlayerAnimation anim;
 
-    public GameObject scoreUI;
     public GameObject healthUI;
-    public GameObject moneyUI;
-    public GameObject ammoUI;
+    public GameObject durabilityUI;
 
     [SerializeField]
     private GameObject[] hearts;
+    [SerializeField]
+    private GameObject[] durabilityBars;
 
-    private Text scoreTxt;
-    private Text moneyTxt;
-    private Text ammoTxt;
+    public Sprite[] durabilitySprites;
+
+    private Text durabilityTxt;
 
     private int health;
     private int ammo;
@@ -37,8 +37,8 @@ public class PlayerStats : MonoBehaviour
         // Load stat from PlayerSaveStats
         health = PlayerSaveStats.Health;
 
-        ammoTxt = ammoUI.GetComponent<Text>();
-        ammoTxt.text = "";
+        durabilityTxt = durabilityUI.GetComponent<Text>();
+        durabilityTxt.text = "";
 
         anim = GetComponentInChildren<PlayerAnimation>();
         playerAtt = GetComponentInChildren<PlayerAttack>();
@@ -47,9 +47,6 @@ public class PlayerStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //scoreTxt.text = "Score: " + score;
-        //moneyTxt.text = "Money: " + money;
-
         ShowDurability();
         ShowHearts(health);
     }
@@ -93,11 +90,37 @@ public class PlayerStats : MonoBehaviour
         }
 
         currentWeap = playerAtt.GetCurrentWeapon();
-        ammoTxt.text = "Weapon Durability: " + currentWeap.Durability();
+        durabilityTxt.text = "Weapon Durability: ";
 
         if(currentWeap.Durability() <= 0)
         {
-            ammoTxt.text = "";
+            durabilityTxt.text = "";
+        }
+
+        for(int i=0; i < durabilityBars.Length; i++){
+            if(i < currentWeap.Durability()){
+                durabilityBars[i].SetActive(true);
+
+                if(i == 0){
+                    if(currentWeap.Durability() > 1){
+                        durabilityBars[i].GetComponent<Image>().sprite = durabilitySprites[1];
+                    }
+                    else
+                    {
+                        durabilityBars[i].GetComponent<Image>().sprite = durabilitySprites[0];
+                    }
+                }
+                else if(i == currentWeap.Durability() - 1){
+                    durabilityBars[i].GetComponent<Image>().sprite = durabilitySprites[3];
+                }
+                else
+                {
+                    durabilityBars[i].GetComponent<Image>().sprite = durabilitySprites[2];
+                }
+            }
+            else{
+                durabilityBars[i].SetActive(false);
+            }
         }
     }
 }
